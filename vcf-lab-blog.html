@@ -1,0 +1,147 @@
+This HTML template utilizes the iconic Windows 95/NT4 aesthetic—using the "Classic Grey" (`#c0c0c0`) for windows, the classic "Teal" (`#008080`) for the desktop background, and high-contrast borders for that 3D beveled look.
+
+Save this as an `.html` file and open it in your browser.
+
+``` html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>VCF_LAB_REPORT.TXT</title>
+    <style>
+        body {
+            background-color: #008080; /* The classic Win95 Teal Desktop */
+            font-family: "MS Sans Serif", "Microsoft Sans Serif", Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        /* The Window Frame */
+        .window {
+            background-color: #c0c0c0;
+            border: 2px solid #000;
+            border-top: 2px solid #ffffff;
+            border-left: 2px solid #ffffff;
+            width: 700px;
+            padding: 3px;
+            box-shadow: 5px 5px 10px rgba(0,0,0,0.5);
+        }
+
+        /* Title Bar */
+        .title-bar {
+            background: linear-gradient(90deg, #000080, #1084d0);
+            color: white;
+            padding: 3px 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: bold;
+            font-size: 13px;
+        }
+        .controls { display: flex; gap: 2px; }
+        .btn {
+            background-color: #c0c0c0;
+            border: 1px solid #fff;
+            border-bottom: 1px solid #000;
+            border-right: 1px solid #000;
+            width: 16px;
+            height: 14px;
+            font-size: 10px;
+            text-align: center;
+            line-height: 12px;
+            cursor: pointer;
+        }
+
+        /* Content Area */
+        .content {
+            background-color: #ffffff;
+            border: 2px inset #ffffff;
+            border-top: 2px solid #808080;
+            border-left: 2px solid #808080;
+            padding: 15px;
+            margin-top: 3px;
+            color: #000;
+            overflow-y: auto;
+            max-height: 80vh;
+        }
+
+        h1 { font-size: 18px; text-decoration: underline; color: #000080; }
+        h2 { font-size: 14px; background: #c0c0c0; padding: 2px; border-bottom: 1px solid #000; }
+        
+        .specs-box {
+            background: #e0e0e0;
+            border: 2px inset #fff;
+            padding: 10px;
+            margin: 10px 0;
+        }
+        
+        .warning-box {
+            background: #c0c0c0;
+            border: 2px outset #fff;
+            padding: 10px;
+            margin-top: 20px;
+            color: #800000;
+            font-weight: bold;
+        }
+        
+        /* Scrollbar Styling (Browser Dependent) */
+        ::-webkit-scrollbar { width: 16px; background: #c0c0c0; }
+        ::-webkit-scrollbar-thumb { background: #c0c0c0; border: 2px outset #fff; }
+    </style>
+</head>
+<body>
+
+<div class="window">
+    <div class="title-bar">
+        <span>VCF_Lab_Report.txt - Notepad</span>
+        <div class="controls">
+            <div class="btn">_</div>
+            <div class="btn">□</div>
+            <div class="btn">X</div>
+        </div>
+    </div>
+
+    <div class="content">
+        <h1>VCF 9.1 Lab Strategy: High-Performance Portable Build</h1>
+        
+        <p><strong>Subject:</strong> Evaluation of Minisforum MS-02 Ultra as a Dual-Use Workstation/VCF Node.</p>
+
+        <h2>1. Hardware Specification</h2>
+        <div class="specs-box">
+            <ul>
+                <li><strong>Compute:</strong> Minisforum MS-02 Ultra (Intel Core Ultra 9 285HX - 24 Cores)</li>
+                <li><strong>Memory:</strong> 256GB RAM (4x 64GB DDR5)</li>
+                <li><strong>Storage:</strong> Crucial P510 1TB NVMe (PCIe 5.0)</li>
+                <li><strong>Network:</strong> Dual 25GbE (Intel E810)</li>
+            </ul>
+        </div>
+
+        <h2>2. Justification</h2>
+        <p>The goal is to eliminate the requirement for dedicated rack-mount lab hardware while maintaining enough performance headroom for VCF 9.1 features, specifically vSAN ESA and memory tiering simulations.</p>
+        
+        <ul>
+            <li><strong>Compute:</strong> 24 physical cores provide ample overhead for nesting the full VCF stack (SDDC Manager + Aria Suite).</li>
+            <li><strong>Storage (Crucial P510):</strong> The upgrade to PCIe 5.0 significantly improves IOPS, reducing the latency bottleneck inherent in running vSAN on smaller, consumer-tier hardware.</li>
+            <li><strong>Efficiency:</strong> This machine doubles as a high-performance workstation for day-to-day administrative tasks, effectively maximizing ROI and lab availability.</li>
+        </ul>
+
+        <div class="warning-box">
+            SYSTEM ALERT: Hardware Compliance Check<br>
+            [!] Hardware is NOT Broadcom Compatibility Guide (BCG) certified.<br>
+            [!] Recommendation: Deploy as 'Nested Virtualization' instance to bypass 
+            hardware pre-checks. Do not use for production workloads.
+        </div>
+
+        <h2>3. Next Steps</h2>
+        <p>1. Document driver compatibility for the Intel E810 NICs.<br>
+           2. Validate MemTest86 stability for 256GB SODIMM configuration.<br>
+           3. Proceed with VCF Edge at Scale automation for single-node deployment.</p>
+    </div>
+</div>
+
+</body>
+</html>
+
+```
