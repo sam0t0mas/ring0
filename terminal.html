@@ -12,7 +12,6 @@
             margin: 0;
             height: 100vh;
             overflow: hidden;
-            /* Retro glow effect */
             text-shadow: 0 0 5px #33ff33;
         }
 
@@ -21,10 +20,7 @@
             margin-bottom: 10px;
         }
 
-        #input-area {
-            display: flex;
-        }
-
+        #input-area { display: flex; }
         #prompt { margin-right: 10px; }
 
         input {
@@ -36,13 +32,22 @@
             outline: none;
             flex-grow: 1;
         }
+
+        #htop-display {
+            border: 1px solid #33ff33;
+            padding: 10px;
+            margin-top: 10px;
+            display: none;
+        }
     </style>
 </head>
 <body>
 
-    <div id="terminal-output">Welcome to VCF Terminal v1.0. 
+    <div id="terminal-output">Welcome to VCF Terminal v1.1. 
 Type 'help' to see available commands.
 </div>
+
+    <div id="htop-display"></div>
 
     <div id="input-area">
         <span id="prompt">user@vcf-lab:~$</span>
@@ -50,17 +55,27 @@ Type 'help' to see available commands.
     </div>
 
     <script>
-        // Simulated File System
+        // File System structure
         const fs = {
             "home": {
-                "readme.txt": "VCF 9.1 Project Status\n- Engineering environment deployment confirmed.\n- Aria Automation integration pending workshop.",
-                "deploy_procedures.txt": "Project documentation available:. Includes NAB architecture diagrams and domain import processes."
+                "type": "dir",
+                "content": {
+                    "readme.txt": "VCF 9.1 Project Status\n- Engineering environment deployment confirmed."
+                }
             }
         };
 
-        let currentDir = "home";
+        let currentPath = ["home"];
+        let htopInterval = null;
         const output = document.getElementById('terminal-output');
         const input = document.getElementById('cmd-input');
+        const htopDiv = document.getElementById('htop-display');
+
+        function getCurrentDir() {
+            let dir = fs;
+            currentPath.forEach(p => dir = dir[p].content);
+            return dir;
+        }
 
         input.addEventListener('keydown', (e) => {
             if (e.key === 'Enter') {
@@ -75,35 +90,56 @@ Type 'help' to see available commands.
             const action = parts[0];
             const arg = parts[1];
 
-            output.innerText += `\nuser@vcf-lab:~/${currentDir}$ ${cmd}\n`;
+            // Stop htop if running
+            if (htopInterval) {
+                clearInterval(htopInterval);
+                htopInterval = null;
+                htopDiv.style.display = 'none';
+            }
+
+            output.innerText += `\nuser@vcf-lab:~/${currentPath.join('/')}$ ${cmd}\n`;
 
             switch(action) {
                 case 'ls':
-                    output.innerText += Object.keys(fs[currentDir]).join('  ') + '\n';
+                    output.innerText += Object.keys(getCurrentDir()).join('  ') + '\n';
                     break;
                 case 'cat':
-                    if (fs[currentDir][arg]) {
-                        output.innerText += fs[currentDir][arg] + '\n';
+                    const file = getCurrentDir()[arg];
+                    if (file && file.type !== 'dir') {
+                        output.innerText += file.content + '\n';
                     } else {
                         output.innerText += `cat: ${arg}: No such file\n`;
                     }
                     break;
-                case 'cd':
-                    if (arg === '..') {
-                        currentDir = 'home';
-                    } else if (fs[arg]) {
-                        currentDir = arg;
-                    } else {
-                        output.innerText += `cd: ${arg}: No such directory\n`;
+                case 'mkdir':
+                    if (arg) {
+                        getCurrentDir()[arg] = { type: 'dir', content: {} };
                     }
                     break;
+                case 'touch':
+                    if (arg) {
+                        getCurrentDir()[arg] = { type: 'file', content: "" };
+                    }
+                    break;
+                case 'htop':
+                    runHtop();
+                    break;
                 case 'help':
-                    output.innerText += "Available: ls, cd, cat [filename], help\n";
+                    output.innerText += "Available: ls, cd, cat [file], mkdir [dir], touch [file], htop, help\n";
                     break;
                 default:
                     output.innerText += `Command not found: ${action}\n`;
             }
             window.scrollTo(0, document.body.scrollHeight);
+        }
+
+        function runHtop() {
+            htopDiv.style.display = 'block';
+            htopInterval = setInterval(() => {
+                const mem = Math.floor(Math.random() * 80) + 20;
+                const cpu = Math.floor(Math.random() * 50) + 10;
+                htopDiv.innerText = `[HTOP SESSION STATS]\nCPU: [${'|'.repeat(cpu/5)}${'.'.repeat(20-cpu/5)}] ${cpu}%\nMEM: [${'|'.repeat(mem/5)}${'.'.repeat(20-mem/5)}] ${mem}%\n(Press any key to exit)`;
+            }, 1000);
         }
     </script>
 </body>
