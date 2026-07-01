@@ -14,15 +14,9 @@
             overflow: hidden;
             text-shadow: 0 0 5px #33ff33;
         }
-
-        #terminal-output {
-            white-space: pre-wrap;
-            margin-bottom: 10px;
-        }
-
+        #terminal-output { white-space: pre-wrap; margin-bottom: 10px; }
         #input-area { display: flex; }
         #prompt { margin-right: 10px; }
-
         input {
             background: transparent;
             border: none;
@@ -32,18 +26,12 @@
             outline: none;
             flex-grow: 1;
         }
-
-        #htop-display {
-            border: 1px solid #33ff33;
-            padding: 10px;
-            margin-top: 10px;
-            display: none;
-        }
+        #htop-display { border: 1px solid #33ff33; padding: 10px; margin-top: 10px; display: none; }
     </style>
 </head>
 <body>
 
-    <div id="terminal-output">Welcome to VCF Terminal v1.1. 
+    <div id="terminal-output">Welcome to VCF Terminal v1.2. 
 Type 'help' to see available commands.
 </div>
 
@@ -55,12 +43,11 @@ Type 'help' to see available commands.
     </div>
 
     <script>
-        // File System structure
         const fs = {
             "home": {
                 "type": "dir",
                 "content": {
-                    "readme.txt": "VCF 9.1 Project Status\n- Engineering environment deployment confirmed."
+                    "readme.txt": { "type": "file", "content": "VCF 9.1 Project Status: Deployed." }
                 }
             }
         };
@@ -90,7 +77,6 @@ Type 'help' to see available commands.
             const action = parts[0];
             const arg = parts[1];
 
-            // Stop htop if running
             if (htopInterval) {
                 clearInterval(htopInterval);
                 htopInterval = null;
@@ -99,33 +85,47 @@ Type 'help' to see available commands.
 
             output.innerText += `\nuser@vcf-lab:~/${currentPath.join('/')}$ ${cmd}\n`;
 
+            const currentDir = getCurrentDir();
+
             switch(action) {
                 case 'ls':
-                    output.innerText += Object.keys(getCurrentDir()).join('  ') + '\n';
+                    output.innerText += Object.entries(currentDir).map(([name, item]) => 
+                        item.type === 'dir' ? `[${name}]` : name).join('  ') + '\n';
+                    break;
+                case 'cd':
+                    if (arg === '..') {
+                        if (currentPath.length > 1) currentPath.pop();
+                    } else if (currentDir[arg] && currentDir[arg].type === 'dir') {
+                        currentPath.push(arg);
+                    } else {
+                        output.innerText += `cd: ${arg}: No such directory\n`;
+                    }
+                    break;
+                case 'rm':
+                    if (currentDir[arg]) {
+                        delete currentDir[arg];
+                    } else {
+                        output.innerText += `rm: ${arg}: No such file or directory\n`;
+                    }
                     break;
                 case 'cat':
-                    const file = getCurrentDir()[arg];
-                    if (file && file.type !== 'dir') {
-                        output.innerText += file.content + '\n';
+                    if (currentDir[arg] && currentDir[arg].type === 'file') {
+                        output.innerText += currentDir[arg].content + '\n';
                     } else {
                         output.innerText += `cat: ${arg}: No such file\n`;
                     }
                     break;
                 case 'mkdir':
-                    if (arg) {
-                        getCurrentDir()[arg] = { type: 'dir', content: {} };
-                    }
+                    if (arg) currentDir[arg] = { type: 'dir', content: {} };
                     break;
                 case 'touch':
-                    if (arg) {
-                        getCurrentDir()[arg] = { type: 'file', content: "" };
-                    }
+                    if (arg) currentDir[arg] = { type: 'file', content: "" };
                     break;
                 case 'htop':
                     runHtop();
                     break;
                 case 'help':
-                    output.innerText += "Available: ls, cd, cat [file], mkdir [dir], touch [file], htop, help\n";
+                    output.innerText += "Available: ls, cd [dir/..], rm [name], cat [file], mkdir [dir], touch [file], htop, help\n";
                     break;
                 default:
                     output.innerText += `Command not found: ${action}\n`;
@@ -138,7 +138,7 @@ Type 'help' to see available commands.
             htopInterval = setInterval(() => {
                 const mem = Math.floor(Math.random() * 80) + 20;
                 const cpu = Math.floor(Math.random() * 50) + 10;
-                htopDiv.innerText = `[HTOP SESSION STATS]\nCPU: [${'|'.repeat(cpu/5)}${'.'.repeat(20-cpu/5)}] ${cpu}%\nMEM: [${'|'.repeat(mem/5)}${'.'.repeat(20-mem/5)}] ${mem}%\n(Press any key to exit)`;
+                htopDiv.innerText = `[HTOP SESSION STATS]\nCPU: [${'|'.repeat(cpu/5)}] ${cpu}%\nMEM: [${'|'.repeat(mem/5)}] ${mem}%\n(Type any command to exit)`;
             }, 1000);
         }
     </script>
