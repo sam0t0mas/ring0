@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Retro Terminal - VCF Labs</title>
+    <style>
+        body {
+            background-color: #050505;
+            color: #33ff33;
+            font-family: 'Courier New', Courier, monospace;
+            padding: 20px;
+            margin: 0;
+            height: 100vh;
+            overflow: hidden;
+            /* Retro glow effect */
+            text-shadow: 0 0 5px #33ff33;
+        }
+
+        #terminal-output {
+            white-space: pre-wrap;
+            margin-bottom: 10px;
+        }
+
+        #input-area {
+            display: flex;
+        }
+
+        #prompt { margin-right: 10px; }
+
+        input {
+            background: transparent;
+            border: none;
+            color: #33ff33;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 16px;
+            outline: none;
+            flex-grow: 1;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="terminal-output">Welcome to VCF Terminal v1.0. 
+Type 'help' to see available commands.
+</div>
+
+    <div id="input-area">
+        <span id="prompt">user@vcf-lab:~$</span>
+        <input type="text" id="cmd-input" autofocus autocomplete="off">
+    </div>
+
+    <script>
+        // Simulated File System
+        const fs = {
+            "home": {
+                "readme.txt": "VCF 9.1 Project Status\n- Engineering environment deployment confirmed.\n- Aria Automation integration pending workshop.",
+                "deploy_procedures.txt": "Project documentation available:. Includes NAB architecture diagrams and domain import processes."
+            }
+        };
+
+        let currentDir = "home";
+        const output = document.getElementById('terminal-output');
+        const input = document.getElementById('cmd-input');
+
+        input.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                const command = input.value.trim();
+                processCommand(command);
+                input.value = '';
+            }
+        });
+
+        function processCommand(cmd) {
+            const parts = cmd.split(' ');
+            const action = parts[0];
+            const arg = parts[1];
+
+            output.innerText += `\nuser@vcf-lab:~/${currentDir}$ ${cmd}\n`;
+
+            switch(action) {
+                case 'ls':
+                    output.innerText += Object.keys(fs[currentDir]).join('  ') + '\n';
+                    break;
+                case 'cat':
+                    if (fs[currentDir][arg]) {
+                        output.innerText += fs[currentDir][arg] + '\n';
+                    } else {
+                        output.innerText += `cat: ${arg}: No such file\n`;
+                    }
+                    break;
+                case 'cd':
+                    if (arg === '..') {
+                        currentDir = 'home';
+                    } else if (fs[arg]) {
+                        currentDir = arg;
+                    } else {
+                        output.innerText += `cd: ${arg}: No such directory\n`;
+                    }
+                    break;
+                case 'help':
+                    output.innerText += "Available: ls, cd, cat [filename], help\n";
+                    break;
+                default:
+                    output.innerText += `Command not found: ${action}\n`;
+            }
+            window.scrollTo(0, document.body.scrollHeight);
+        }
+    </script>
+</body>
+</html>
