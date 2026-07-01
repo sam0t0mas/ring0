@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Hacker Typer Clone</title>
+  <style>
+    :root{
+      --bg:#000;
+      --text:#0f0;
+      --muted:#083;
+      --cursor:#0f0;
+      --panel-bg:rgba(255,255,255,0.02);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      padding:20px;
+      background:var(--bg);
+      color:var(--text);
+      font-family: "Courier New", Courier, monospace;
+      font-size:15px;
+      line-height:1.4;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+
+    header{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      justify-content:space-between;
+    }
+    .controls{
+      display:flex;
+      gap:8px;
+      align-items:center;
+    }
+    button, select, label{
+      background:transparent;
+      color:var(--text);
+      border:1px solid rgba(255,255,255,0.06);
+      padding:6px 10px;
+      border-radius:6px;
+      cursor:pointer;
+      font-family:inherit;
+      font-size:13px;
+    }
+    button:hover, select:hover{border-color:rgba(255,255,255,0.12)}
+    #hint{color:var(--muted); font-size:13px}
+
+    main{
+      flex:1;
+      display:flex;
+      gap:12px;
+      align-items:flex-start;
+    }
+
+    #screenWrap{
+      flex:1;
+      background:var(--panel-bg);
+      border-radius:8px;
+      padding:18px;
+      overflow:auto;
+      min-height:320px;
+      box-shadow:0 6px 18px rgba(0,0,0,0.6);
+      border:1px solid rgba(255,255,255,0.02);
+    }
+
+    #screen{
+      white-space:pre-wrap;
+      word-break:break-word;
+      color:var(--text);
+      font-size:15px;
+      outline:none;
+      min-height:200px;
+    }
+
+    .cursor{
+      display:inline-block;
+      width:10px;
+      height:18px;
+      background:var(--cursor);
+      vertical-align:bottom;
+      margin-left:2px;
+      animation:blink 1s steps(1) infinite;
+    }
+    @keyframes blink{50%{background:transparent}}
+
+    aside{
+      width:260px;
+      min-width:200px;
+      max-width:320px;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+    .panel{
+      background:rgba(255,255,255,0.02);
+      padding:12px;
+      border-radius:8px;
+      border:1px solid rgba(255,255,255,0.02);
+      color:var(--muted);
+      font-size:13px;
+    }
+    .panel label{display:block; margin-bottom:6px; color:var(--muted)}
+    .panel textarea{
+      width:100%;
+      height:120px;
+      background:transparent;
+      color:var(--text);
+      border:1px dashed rgba(255,255,255,0.03);
+      padding:8px;
+      border-radius:6px;
+      font-family:inherit;
+      font-size:13px;
+      resize:vertical;
+    }
+
+    footer{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      color:var(--muted);
+      font-size:13px;
+      gap:12px;
+    }
+
+    /* compact responsive */
+    @media (max-width:880px){
+      aside{display:none}
+      body{padding:12px}
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div>
+      <strong>Hacker Typer Clone</strong>
+      <div id="hint">Type anywhere to reveal code. Hold keys to accelerate. Press F for fullscreen.</div>
+    </div>
+
+    <div class="controls">
+      <button id="clearBtn" title="Clear screen">Clear</button>
+      <button id="downloadBtn" title="Download current screen as .txt">Download</button>
+      <button id="fullscreenBtn" title="Toggle fullscreen">Fullscreen</button>
+      <select id="themeSelect" title="Theme">
+        <option value="green">Green on Black</option>
+        <option value="amber">Amber on Dark</option>
+        <option value="matrix">Matrix Rain (green)</option>
+        <option value="light">Light</option>
+      </select>
+    </div>
+  </header>
+
+  <main>
+    <div id="screenWrap" tabindex="0" aria-label="Hacker screen">
+      <div id="screen"></div><span class="cursor" id="cursor"></span>
+    </div>
+
+    <aside>
+      <div class="panel">
+        <label for="speedRange"><strong>Reveal speed</strong> — characters per keypress</label>
+        <input id="speedRange" type="range" min="1" max="12" value="3" />
+      </div>
+
+      <div class="panel">
+        <label for="codeInput"><strong>Custom code</strong> — paste or edit the text to use</label>
+        <textarea id="codeInput" spellcheck="false"></textarea>
+        <div style="display:flex;gap:8px;margin-top:8px">
+          <button id="loadBtn">Load</button>
+          <button id="resetBtn">Reset sample</button>
+        </div>
+      </div>
+
+      <div class="panel">
+        <strong>Tips</strong>
+        <ul style="margin:8px 0 0 18px;color:var(--muted);padding:0">
+          <li>Type any key to reveal more text</li>
+          <li>Hold a key to reveal continuously</li>
+          <li>Use Clear to start over</li>
+        </ul>
+      </div>
+    </aside>
+  </main>
+
+  <footer>
+    <div id="status">0 / 0 chars revealed</div>
+    <div>Made for fun</div>
+  </footer>
+
+  <script>
+    // Sample text to reveal. You can replace or paste your own in the textarea.
+    const sampleText = `#include <stdio.h>
+#include <stdlib.h>
+
+int main() {
+    printf("Initializing secure connection...\\n");
+    for (int i = 0; i < 10; i++) {
+        printf("Bypassing firewall layer %d...\\n", i);
+    }
+    printf("Access granted.\\n");
+    printf("Downloading confidential data...\\n");
+    for (int i = 0; i < 100; i++) {
+        printf("Packet %d received.\\n", i);
+    }
+    printf("Operation complete.\\n");
+    return 0;
+}
+
+/* Additional simulated log output */
+[2026-07-01 14:02:01] AUTH OK
+[2026-07-01 14:02:02] SESSION ESTABLISHED
+[2026-07-01 14:02:03] STREAMING 1024KB/s
+... end of log ...
+`;
+
+    // Elements
+    const screen = document.getElementById('screen');
+    const cursor = document.getElementById('cursor');
+    const screenWrap = document.getElementById('screenWrap');
+    const speedRange = document.getElementById('speedRange');
+    const codeInput = document.getElementById('codeInput');
+    const loadBtn = document.getElementById('loadBtn');
+    const resetBtn = document.getElementById('resetBtn');
+    const clearBtn = document.getElementById('clearBtn');
+    const downloadBtn = document.getElementById('downloadBtn');
+    const fullscreenBtn = document.getElementById('fullscreenBtn');
+    const themeSelect = document.getElementById('themeSelect');
+    const status = document.getElementById('status');
+
+    // State
+    let codeText = sampleText;
+    let index = 0;
+    let charsPerPress = parseInt(speedRange.value, 10) || 3;
+    let holdInterval = null;
+    let holdDelay = 60; // ms between reveals when holding
+    let isMatrix = false;
+
+    // Initialize UI
+    codeInput.value = sampleText;
+    updateStatus();
+
+    // Reveal function
+    function reveal(n) {
+      if (!codeText || index >= codeText.length) return;
+      const next = codeText.slice(index, Math.min(index + n, codeText.length));
+      // Append preserving whitespace
+      screen.textContent += next;
+      index += next.length;
+      // Auto-scroll
+      screenWrap.scrollTop = screenWrap.scrollHeight;
+      updateStatus();
+    }
+
+    function updateStatus() {
+      status.textContent = `${index} / ${codeText.length} chars revealed`;
+    }
+
+    // Key handling
+    function handleKeyDown(e) {
+      // Allow some keys to function normally (e.g., F for fullscreen)
+      if (e.key === 'F' || e.key === 'f') {
+        toggleFullscreen();
+        return;
+      }
+      // Prevent default scrolling for space/arrow keys
+      if ([' ', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
+        e.preventDefault();
+      }
+      // Start hold reveal on keydown
+      if (holdInterval) return;
+      reveal(charsPerPress);
+      holdInterval = setInterval(() => reveal(charsPerPress), holdDelay);
+    }
+
+    function handleKeyUp() {
+      if (holdInterval) {
+        clearInterval(holdInterval);
+        holdInterval = null;
+      }
+    }
+
+    // Mouse click also reveals
+    screenWrap.addEventListener('mousedown', (e) => {
+      e.preventDefault();
+      reveal(charsPerPress);
+    });
+
+    // Attach keyboard listeners to the document so typing anywhere works
+    document.addEventListener('keydown', handleKeyDown);
+    document.addEventListener('keyup', handleKeyUp);
+    // Also stop hold if window loses focus
+    window.addEventListener('blur', handleKeyUp);
+
+    // Speed control
+    speedRange.addEventListener('input', () => {
+      charsPerPress = parseInt(speedRange.value, 10) || 3;
+    });
+
+    // Load custom code from textarea
+    loadBtn.addEventListener('click', () => {
+      codeText = codeInput.value || '';
+      index = 0;
+      screen.textContent = '';
+      updateStatus();
+    });
+
+    // Reset to sample
+    resetBtn.addEventListener('click', () => {
+      codeInput.value = sampleText;
+      codeText = sampleText;
+      index = 0;
+      screen.textContent = '';
+      updateStatus();
+    });
+
+    // Clear screen (keeps codeText and index reset)
+    clearBtn.addEventListener('click', () => {
+      index = 0;
+      screen.textContent = '';
+      updateStatus();
+    });
+
+    // Download current screen as .txt
+    downloadBtn.addEventListener('click', () => {
+      const blob = new Blob([screen.textContent], { type: 'text/plain;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'hacker-typer-output.txt';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    });
+
+    // Fullscreen toggle
+    function toggleFullscreen() {
+      if (!document.fullscreenElement) {
+        screenWrap.requestFullscreen?.();
+      } else {
+        document.exitFullscreen?.();
+      }
+    }
+    fullscreenBtn.addEventListener('click', toggleFullscreen);
+
+    // Theme switching
+    themeSelect.addEventListener('change', () => {
+      const t = themeSelect.value;
+      isMatrix = false;
+      document.documentElement.style.removeProperty('--bg');
+      document.documentElement.style.removeProperty('--text');
+      document.documentElement.style.removeProperty('--muted');
+      document.documentElement.style.removeProperty('--cursor');
+      if (t === 'green') {
+        document.documentElement.style.setProperty('--bg', '#000');
+        document.documentElement.style.setProperty('--text', '#0f0');
+        document.documentElement.style.setProperty('--muted', '#083');
+        document.documentElement.style.setProperty('--cursor', '#0f0');
+      } else if (t === 'amber') {
+        document.documentElement.style.setProperty('--bg', '#0b0b05');
+        document.documentElement.style.setProperty('--text', '#ffb84d');
+        document.documentElement.style.setProperty('--muted', '#7a4f1a');
+        document.documentElement.style.setProperty('--cursor', '#ffb84d');
+      } else if (t === 'matrix') {
+        document.documentElement.style.setProperty('--bg', '#000');
+        document.documentElement.style.setProperty('--text', '#00ff41');
+        document.documentElement.style.setProperty('--muted', '#003300');
+        document.documentElement.style.setProperty('--cursor', '#00ff41');
+        isMatrix = true;
+      } else if (t === 'light') {
+        document.documentElement.style.setProperty('--bg', '#f6f7fb');
+        document.documentElement.style.setProperty('--text', '#0b0b0b');
+        document.documentElement.style.setProperty('--muted', '#666');
+        document.documentElement.style.setProperty('--cursor', '#0b0b0b');
+      }
+    });
+
+    // Allow paste to load text quickly
+    document.addEventListener('paste', (e) => {
+      const pasted = (e.clipboardData || window.clipboardData).getData('text');
+      if (pasted) {
+        codeText = pasted;
+        index = 0;
+        screen.textContent = '';
+        codeInput.value = pasted;
+        updateStatus();
+      }
+    });
+
+    // Accessibility: focus the screen on load so keyboard works immediately
+    window.addEventListener('load', () => {
+      screenWrap.focus();
+    });
+
+    // Prevent accidental selection while holding mouse
+    screenWrap.addEventListener('selectstart', (e) => e.preventDefault());
+  </script>
+</body>
+</html>
