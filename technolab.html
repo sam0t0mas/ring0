@@ -1,334 +1,261 @@
 <!DOCTYPE html>
-<link rel="icon" href="/favicon_multi_resolution.ico" type="image/x-icon">
+<link rel="icon" href="/favicon_multi_resolution.ico" type="image/x-icon
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>The Machines That Made a Career</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    body {
-      background-color: #111;
-      color: #ddd;
-      font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-    }
-    a {
-      color: #66c2ff;
-      text-decoration: none;
-    }
-    a:hover {
-      text-decoration: underline;
-    }
-    #container {
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 20px 15px 60px;
-    }
-    header {
-      border-bottom: 1px solid #333;
-      margin-bottom: 20px;
-      padding-bottom: 10px;
-    }
-    header h1 {
-      font-size: 28px;
-      margin: 0;
-      color: #f5f5f5;
-    }
-    header p {
-      margin: 5px 0 0;
-      font-size: 13px;
-      color: #999;
-    }
-    h2 {
-      font-size: 22px;
-      margin-top: 30px;
-      margin-bottom: 10px;
-      color: #f0f0f0;
-    }
-    h3 {
-      font-size: 18px;
-      margin-top: 20px;
-      margin-bottom: 8px;
-      color: #e0e0e0;
-    }
-    p {
-      line-height: 1.6;
-      font-size: 14px;
-      margin: 8px 0;
-    }
-    ul {
-      margin: 8px 0 8px 20px;
-      padding: 0;
-    }
-    li {
-      margin: 4px 0;
-      font-size: 14px;
-    }
-    code {
-      background: #222;
-      padding: 2px 4px;
-      border-radius: 3px;
-      font-size: 13px;
-    }
-    .section {
-      margin-bottom: 25px;
-    }
-    .meta {
-      font-size: 12px;
-      color: #888;
-    }
-    footer {
-      border-top: 1px solid #333;
-      margin-top: 40px;
-      padding-top: 10px;
-      font-size: 12px;
-      color: #777;
-      text-align: center;
-    }
-  </style>
+<meta charset="UTF-8">
+<title>My Computing Journey</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  body {
+    background-color: #000;
+    color: #33ff33;
+    font-family: "Courier New", Courier, monospace;
+    margin: 0;
+    padding: 0;
+    line-height: 1.5;
+    text-shadow: 0 0 3px #0f0;
+  }
+
+  #container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+
+  header {
+    border-bottom: 2px solid #33ff33;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+  }
+
+  header h1 {
+    font-size: 28px;
+    margin: 0;
+  }
+
+  header p {
+    font-size: 14px;
+    margin: 5px 0 0;
+  }
+
+  h2 {
+    font-size: 20px;
+    margin-top: 30px;
+    border-left: 4px solid #33ff33;
+    padding-left: 10px;
+  }
+
+  h3 {
+    font-size: 16px;
+    margin-top: 20px;
+    text-decoration: underline;
+  }
+
+  p, li {
+    font-size: 14px;
+  }
+
+  ul {
+    margin-left: 20px;
+  }
+
+  code {
+    background: #003300;
+    padding: 2px 4px;
+    border: 1px solid #33ff33;
+  }
+
+  footer {
+    border-top: 2px solid #33ff33;
+    margin-top: 40px;
+    padding-top: 10px;
+    font-size: 12px;
+    text-align: center;
+  }
+
+  /* CRT Scanline Effect */
+  body:before {
+    content: "";
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    background: repeating-linear-gradient(
+      to bottom,
+      rgba(0, 255, 0, 0.05),
+      rgba(0, 255, 0, 0.05) 2px,
+      rgba(0, 255, 0, 0.02) 2px,
+      rgba(0, 255, 0, 0.02) 4px
+    );
+    z-index: 9999;
+  }
+</style>
 </head>
+
 <body>
-  <div id="container">
-    <header>
-      <h1>The Machines That Made a Career</h1>
-      <p>IBM XT → IBM PS/1 → clones, labs, Linux, networks, and three decades in technology</p>
-    </header>
+<div id="container">
 
-    <div class="section">
-      <p>
-        The story of a career in technology is often the story of the machines that shaped it.
-        For some people, their first computer was a gateway. For you, it was a launchpad—a sequence
-        of systems that didn’t just run software, but built a mindset, a skillset, and eventually a
-        profession spanning more than thirty years.
-      </p>
-      <p>
-        This is that story: part memoir, part technical history, part tribute to the lab environments
-        that forged a technologist.
-      </p>
-    </div>
+<header>
+  <h1>THE MACHINES THAT MADE MY CAREER</h1>
+  <p>IBM XT → IBM PS/1 → clones, laptops, labs, Linux, networks, and decades of curiosity</p>
+</header>
 
-    <div class="section">
-      <h2>IBM XT (1989): Where It All Began</h2>
-      <p>Your first machine was the IBM XT, a boxy, beige monument to early personal computing.</p>
-      <ul>
-        <li>~4 MHz CPU</li>
-        <li>1 MB RAM</li>
-        <li>DOS era</li>
-        <li>Thexder, early shareware, and the dawn of PC gaming</li>
-      </ul>
-      <p>
-        The XT wasn’t fast, but it felt limitless. Booting into DOS, navigating directories, editing
-        <code>CONFIG.SYS</code> and <code>AUTOEXEC.BAT</code>—these weren’t chores, they were rituals.
-        The XT taught you the fundamentals: how computers think, how they fail, and how to coax them
-        back to life.
-      </p>
-      <p>
-        It was the beginning of a lifelong habit: learning by doing, breaking things, fixing them,
-        and pushing hardware further than it was ever meant to go.
-      </p>
-    </div>
+<p>
+My career in technology is really the story of the machines I grew up with. Every system taught me
+something new — sometimes by working perfectly, more often by breaking in spectacular ways. This is
+my personal timeline, told through the hardware that shaped me.
+</p>
 
-    <div class="section">
-      <h2>IBM PS/1 (1991): The First Upgrade</h2>
-      <p>Your second system, the IBM PS/1, felt like stepping into the future.</p>
-      <ul>
-        <li>10 MHz CPU</li>
-        <li>2 MB RAM</li>
-        <li>IBM PC DOS</li>
-        <li>Commander Keen and the golden age of DOS gaming</li>
-      </ul>
-      <p>
-        The PS/1 wasn’t just faster—it was friendlier. IBM bundled utilities, a more polished DOS
-        experience, and a sense that personal computing was becoming mainstream. But for you, it was
-        still a playground. You learned how memory managers worked, how to squeeze performance out of
-        limited hardware, and how software interacted with the underlying system.
-      </p>
-      <p>This was the era where curiosity became capability.</p>
-    </div>
+<h2>IBM XT (1989)</h2>
+<p>My first computer. Beige. Heavy. Glorious.</p>
+<ul>
+  <li>~4 MHz CPU</li>
+  <li>1 MB RAM</li>
+  <li>DOS</li>
+  <li>Thexder</li>
+</ul>
+<p>
+I learned DOS by editing <code>CONFIG.SYS</code> and <code>AUTOEXEC.BAT</code> until something broke,
+then figuring out how to fix it. That loop became the foundation of everything I do.
+</p>
 
-    <div class="section">
-      <h2>The Clone Era (1993–1998): Building Machines, Building Skills</h2>
-      <p>
-        Then came the clones—DIY systems that didn’t just run your software, they taught you how to
-        build computers.
-      </p>
+<h2>IBM PS/1 (1991)</h2>
+<ul>
+  <li>10 MHz CPU</li>
+  <li>2 MB RAM</li>
+  <li>IBM PC DOS</li>
+  <li>Commander Keen</li>
+</ul>
+<p>
+My first “fast” machine. I pushed it hard, learned memory managers, and discovered how DOS games
+really worked under the hood.
+</p>
 
-      <h3>386 Clone (1993)</h3>
-      <ul>
-        <li>MS-DOS</li>
-        <li>DOOM era</li>
-        <li>IRQ conflicts, sound card drivers, VESA modes</li>
-      </ul>
+<h2>The Clone Era (1993–1998)</h2>
 
-      <h3>486SX Clone (1995)</h3>
-      <ul>
-        <li>MS-DOS, Windows 3.11, Windows 95</li>
-        <li>Novell IPX/SPX networking</li>
-        <li>Your first real exposure to networking protocols and LANs</li>
-      </ul>
+<h3>386 Clone (1993)</h3>
+<ul>
+  <li>MS-DOS</li>
+  <li>DOOM</li>
+  <li>IRQ conflicts everywhere</li>
+</ul>
 
-      <p>
-        This period was foundational. You weren’t just using computers—you were assembling them,
-        upgrading them, troubleshooting them, and learning the architecture from the inside out.
-      </p>
-    </div>
+<h3>486SX Clone (1995)</h3>
+<ul>
+  <li>MS-DOS, Windows 3.11, Windows 95</li>
+  <li>Novell IPX/SPX networking</li>
+</ul>
 
-    <div class="section">
-      <h2>Early Linux & Networking: Wallace and Gromit</h2>
-      <p>
-        Two machines stand out as milestones in your transition from hobbyist to professional:
-      </p>
+<p>
+These machines taught me hardware the hard way — jumpers, BIOS quirks, sound card drama, and the joy
+of squeezing performance out of something I built myself.
+</p>
 
-      <h3>286 “Wallace”</h3>
-      <ul>
-        <li>NIS, SMB, Postfix, Sendmail</li>
-        <li>Production Red Hat Linux services</li>
-      </ul>
+<h2>Early Linux & Networking: Wallace and Gromit</h2>
 
-      <h3>286 “Gromit”</h3>
-      <ul>
-        <li>BGP, iptables</li>
-        <li>Production Red Hat Linux internet gateway</li>
-      </ul>
+<h3>286 “Wallace”</h3>
+<ul>
+  <li>NIS, SMB</li>
+  <li>Postfix, Sendmail</li>
+  <li>Production Red Hat Linux</li>
+</ul>
 
-      <p>
-        These weren’t toys. They were production systems, running real services, supporting real users.
-        You were now managing authentication, mail routing, firewall rules, and routing protocols.
-        You were building infrastructure.
-      </p>
-      <p>
-        This was the moment your lab became a network, and your network became a career.
-      </p>
-    </div>
+<h3>286 “Gromit”</h3>
+<ul>
+  <li>BGP</li>
+  <li>iptables</li>
+  <li>INET gateway duties</li>
+</ul>
 
-    <div class="section">
-      <h2>The Processor March (1996–2004)</h2>
-      <p>
-        The late ’90s were a blur of CPUs and incremental upgrades, each one expanding what your lab
-        could do:
-      </p>
-      <ul>
-        <li>Cyrix (1996)</li>
-        <li>AMD K2 (1996)</li>
-        <li>Celeron (1997)</li>
-        <li>Pentium II / III (1998)</li>
-        <li>Pentium II 600 MHz / 64 MB (1998–2004) — long-lived lab machine</li>
-      </ul>
-      <p>
-        More RAM meant bigger workloads. Faster CPUs meant more complex simulations. Better motherboards
-        meant more stable Linux kernels. Your lab was becoming a testbed for routing, firewalls,
-        distributed systems, early virtualization, and the emerging world of open-source tooling.
-      </p>
-    </div>
+<p>
+These were my first real production Linux systems. They handled authentication, mail routing,
+firewalling, and gateway services. Running real infrastructure taught me real responsibility.
+</p>
 
-    <div class="section">
-      <h2>P4 and the Rise of Virtualization (2004–2008)</h2>
-      <p>
-        The Pentium 4 era brought the horsepower needed for early VMware, larger Linux builds, and more
-        ambitious home lab environments.
-      </p>
-      <ul>
-        <li>Pentium 4, 1 GHz+</li>
-        <li>512 MB RAM</li>
-      </ul>
-      <p>
-        This was when “home lab” became “private datacenter.”
-      </p>
-    </div>
+<h2>The Processor March (1996–2004)</h2>
+<ul>
+  <li>Cyrix (1996)</li>
+  <li>AMD K2 (1996)</li>
+  <li>Celeron (1997)</li>
+  <li>Pentium II / III (1998)</li>
+  <li>P2 600 MHz / 64 MB (1998–2004)</li>
+</ul>
 
-    <div class="section">
-      <h2>SUN AMD Opteron (2006–2010): First Real Lab Server</h2>
-      <p>
-        Your Opteron system was a turning point—true server-class hardware running both lab workloads
-        and web hosting.
-      </p>
-      <p>
-        You weren’t just experimenting anymore; you were running infrastructure that mirrored
-        professional environments.
-      </p>
-    </div>
+<h2>P4 & Virtualisation (2004–2008)</h2>
+<ul>
+  <li>Pentium 4, 1 GHz+</li>
+  <li>512 MB RAM</li>
+</ul>
 
-    <div class="section">
-      <h2>Alienware Era (2010–2015): Gaming Meets Dev</h2>
-      <ul>
-        <li>Alienware i7 / GTX580 SLI (2010–2011)</li>
-        <li>Alienware 13 / 4 GB (2012–2015)</li>
-      </ul>
-      <p>
-        These machines blended gaming performance with development capability. Fast, flexible, and ideal
-        for both entertainment and serious work.
-      </p>
-    </div>
+<h2>SUN AMD Opteron (2006–2010)</h2>
+<p>
+My first true server-class machine. It ran lab workloads, hosted websites, and gave me a taste of
+real infrastructure scale.
+</p>
 
-    <div class="section">
-      <h2>First 4‑Node VMware Lab (2014–2020)</h2>
-      <p>Four HP N40L microservers became your first multi-node virtualization cluster:</p>
-      <ul>
-        <li>Atom CPUs</li>
-        <li>4 GB RAM each</li>
-        <li>Distributed storage and multi-node hypervisors</li>
-      </ul>
-      <p>
-        It was a huge milestone: realistic enterprise-style lab environments running in your own space.
-      </p>
-    </div>
+<h2>Alienware Era (2010–2015)</h2>
+<ul>
+  <li>Alienware i7 / GTX580 SLI (2010–2011)</li>
+  <li>Alienware 13 (2012–2015)</li>
+</ul>
 
-    <div class="section">
-      <h2>Modern Era (2018–2026): High‑Performance Labs</h2>
-      <ul>
-        <li>HP i7 (2018–2026) — 4 cores / 32 GB, gaming/lab/dev</li>
-        <li>Clone i7 (2019–2023) — 4 cores / 16 GB, gaming/dev</li>
-        <li>Minisforum MS‑02 (2026) — 24 cores / 256 GB, gaming/lab/dev</li>
-      </ul>
-      <p>
-        The Minisforum MS‑02 represents the culmination of decades of learning. It’s not just a computer—
-        it’s a personal cloud, a development platform, a research environment, and a playground for
-        modern computing.
-      </p>
-    </div>
+<h2>My First 4‑Node VMware Lab (2014–2020)</h2>
+<ul>
+  <li>4× HP N40L</li>
+  <li>Atom CPUs</li>
+  <li>4 GB RAM each</li>
+</ul>
 
-    <div class="section">
-      <h2>Side Systems & Nostalgia</h2>
-      <ul>
-        <li>IBM PS/2 (~1997) — retro gaming nostalgia</li>
-        <li>Surface Hub 2S 50" (2021–202x) — Teams</li>
-        <li>Surface Hub 2S 50" (2023–202x) — Windows Surface</li>
-      </ul>
-      <p>
-        These systems reflect the breadth of your computing life: from retro DOS games to enterprise
-        collaboration displays.
-      </p>
-    </div>
+<h2>Modern Era (2018–2026)</h2>
+<ul>
+  <li>HP i7 (2018–2026)</li>
+  <li>Clone i7 (2019–2023)</li>
+  <li>Minisforum MS‑02 (2026)</li>
+</ul>
 
-    <div class="section">
-      <h2>Three Decades of Learning Through Machines</h2>
-      <p>Across all these systems, a pattern emerges:</p>
-      <ul>
-        <li><strong>Curiosity → Competence:</strong> You explored, modified, broke, and rebuilt.</li>
-        <li><strong>Labs → Architecture:</strong> Home labs evolved into multi-node clusters.</li>
-        <li><strong>Play → Profession:</strong> Games became gateways into deeper technical understanding.</li>
-        <li><strong>Systems → Networks → Infrastructure:</strong> From DOS to Linux, from standalone to distributed.</li>
-        <li><strong>Hands-On Experience:</strong> Every machine taught you something about how systems really work.</li>
-      </ul>
-    </div>
+<h2>Laptop Era (2003–2023)</h2>
+<ul>
+  <li>Compaq Ultralight (2003)</li>
+  <li>Acer Education Laptop (2003–2004)</li>
+  <li>Fujitsu Purple (2004–2005)</li>
+  <li>ThinkPad X22 (2005)</li>
+  <li>Fujitsu Lifebook (2005–2006)</li>
+  <li>ThinkPad X23 (2005)</li>
+  <li>ThinkPad X30 (2005)</li>
+  <li>ThinkPad X40 (2005–2011)</li>
+  <li>ThinkPad T42 (2007–2012)</li>
+  <li>ThinkPad T43 (2007)</li>
+  <li>Surface Book (2015–2018)</li>
+  <li>Surface Go ×2 (2018)</li>
+  <li>Surface Laptop (2019–2023)</li>
+  <li>Surface Go 2 (2020–2023)</li>
+  <li>Surface Laptop Go (2022–2023)</li>
+</ul>
 
-    <div class="section">
-      <h2>Final Reflection</h2>
-      <p>
-        Your computing history is a timeline of technological evolution, but it’s also a personal story
-        of growth. From a 4 MHz IBM XT to a 24‑core Minisforum powerhouse, every machine was a chapter.
-        Every lab was a classroom. Every upgrade was a step forward.
-      </p>
-      <p>
-        Three decades later, you’re still learning, still building, still exploring—because the machines
-        may change, but the curiosity that started in 1989 never went away.
-      </p>
-    </div>
+<h2>Work Machines (2001–2023)</h2>
+<ul>
+  <li>Sony Vaio PCG505 — Onga Pumps (2001)</li>
+  <li>ThinkPad T42 — Yarra Trams (2004)</li>
+  <li>Dell — Melbourne Business School (2010)</li>
+  <li>Toshiba — Telstra (2011)</li>
+  <li>Dell — Metro Trains (2016)</li>
+  <li>Surface 4 — Acurus PS/MSP (2017)</li>
+  <li>Acer BYOD — Dept. Education (2019)</li>
+  <li>Lenovo — ANZ Bank (2020–2021)</li>
+  <li>HP BYOD — Court Services Victoria (2022–2023)</li>
+</ul>
 
-    <footer>
-      <span class="meta">Generated personal lab/computing history · HTML layout inspired by minimalist lab blog style</span>
-    </footer>
-  </div>
+<h2>Final Reflection</h2>
+<p>
+From a 4 MHz IBM XT to a 24‑core Minisforum powerhouse, every machine has been a chapter in my story.
+Decades later, I’m still learning, still building, still exploring — because the curiosity that
+started in 1989 never went away.
+</p>
+
+<footer>
+  <span>RETRO COMPUTING LOG · CRT MODE ENABLED</span>
+</footer>
+
+</div>
 </body>
 </html>
