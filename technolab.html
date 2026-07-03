@@ -81,6 +81,31 @@
     from { border-color: transparent; }
     to { border-color: #33ff33; }
   }
+.cmd {
+  display: block;
+  cursor: pointer;
+  color: #33ff33;
+  text-shadow: 0 0 4px #0f0;
+}
+
+.cmd:hover {
+  color: #55ff55;
+  text-shadow: 0 0 6px #0f0;
+}
+
+.bbs-output {
+  background-color: #000;
+  border: 2px solid #33ff33;
+  padding: 20px;
+  margin-top: 20px;
+  text-shadow: 0 0 4px #0f0;
+}
+
+#bbs-text {
+  white-space: pre-wrap;
+  font-size: 13px;
+  line-height: 1.4;
+}
 
 </style>
 </head>
@@ -209,25 +234,36 @@ a personal device, humming quietly as it booted into DOS.
 
 <!-- BBS MENU -->
 <div id="menu" class="block">
+<div id="bbs-menu" class="bbs-menu">
 <pre>
 ┌──────────────────────────────────────────────────────────────────────────────┐
 │                         R I N G   Z E R O   B B S                            │
 │                     ▒▒▒▒▒▒▒▒▒▒▒▒  MAIN MENU  ▒▒▒▒▒▒▒▒▒▒▒▒                    │
 └──────────────────────────────────────────────────────────────────────────────┘
 
-[1] MESSAGE BASES
-[2] FILE AREAS
-[3] ANSI ART GALLERY
-[4] SYSOP CHAT
-[5] TIMELINE ARCHIVE
-[6] HARDWARE DATABASE
-[7] NETWORK TOOLS
-[8] LAB CONTROL PANEL
-[9] USER SETTINGS
-[0] LOG OFF / HANG UP
+<span class="cmd" data-cmd="messages">[1] MESSAGE BASES</span>
+<span class="cmd" data-cmd="files">[2] FILE AREAS</span>
+<span class="cmd" data-cmd="ansi">[3] ANSI ART GALLERY</span>
+<span class="cmd" data-cmd="chat">[4] SYSOP CHAT</span>
+<span class="cmd" data-cmd="timeline">[5] TIMELINE ARCHIVE</span>
+<span class="cmd" data-cmd="hardware">[6] HARDWARE DATABASE</span>
+<span class="cmd" data-cmd="network">[7] NETWORK TOOLS</span>
+<span class="cmd" data-cmd="lab">[8] LAB CONTROL PANEL</span>
+<span class="cmd" data-cmd="settings">[9] USER SETTINGS</span>
+<span class="cmd" data-cmd="logout">[0] LOG OFF / HANG UP</span>
 
-ENTER COMMAND: _
+──────────────────────────────────────────────────────────────────────────────
+CLICK A COMMAND ABOVE
 </pre>
+</div>
+
+<div id="bbs-output" class="bbs-output">
+<pre id="bbs-text">
+[ RING ZERO BBS OUTPUT WINDOW ]
+Click a command from the menu to continue…
+</pre>
+</div>
+
 </div>
 
 <footer>
@@ -246,6 +282,71 @@ blocks.forEach(id => {
     document.getElementById(id).style.opacity = 1;
   }, delay);
   delay += 1500;
+});
+</script>
+
+  <script>
+const output = document.getElementById("bbs-text");
+
+const responses = {
+  messages: `
+[ MESSAGE BASES ]
+System updates, timeline logs, hardware notes, sysop broadcasts.
+(Feature coming soon in Ring Zero BBS v2.0)
+  `,
+  files: `
+[ FILE AREAS ]
+Download system specs, lab configs, retro docs, and archived machine lists.
+(Feature coming soon)
+  `,
+  ansi: `
+[ ANSI ART GALLERY ]
+Ring Zero logos, BBS art packs, timeline graphics.
+(Feature coming soon)
+  `,
+  chat: `
+[ SYSOP CHAT ]
+Paging sysop...
+No response. Sysop may be in the lab.
+  `,
+  timeline: `
+[ TIMELINE ARCHIVE ]
+XT → PS/1 → clones → Linux → labs → MS‑02
+(Scroll up to view full timeline)
+  `,
+  hardware: `
+[ HARDWARE DATABASE ]
+Search specs for every machine ever connected to Ring Zero Systems.
+(Feature coming soon)
+  `,
+  network: `
+[ NETWORK TOOLS ]
+Ping, traceroute, port scan, BGP route viewer.
+(Feature coming soon)
+  `,
+  lab: `
+[ LAB CONTROL PANEL ]
+Manage virtual nodes, ESXi cluster, containers, MS‑02 workloads.
+(Feature coming soon)
+  `,
+  settings: `
+[ USER SETTINGS ]
+Change password, ANSI preferences, baud rate, terminal type.
+(Feature coming soon)
+  `,
+  logout: `
+[ LOG OFF ]
+Hanging up...
+~~ carrier lost ~~
+Connection terminated.
+  `
+};
+
+document.querySelectorAll(".cmd").forEach(el => {
+  el.addEventListener("click", () => {
+    const cmd = el.getAttribute("data-cmd");
+    output.textContent = responses[cmd];
+  });
 });
 </script>
 
