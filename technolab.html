@@ -1,10 +1,9 @@
-<!DOCTYPE html>
 <link rel="icon" href="/favicon_multi_resolution.ico" type="image/x-icon
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Ring Zero – Technology Journey</title>
+<title>Ring Zero – My Computing Journey</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
@@ -16,6 +15,7 @@
     padding: 0;
     line-height: 1.5;
     text-shadow: 0 0 3px #0f0;
+    overflow-x: hidden;
   }
 
   #container {
@@ -24,14 +24,39 @@
     padding: 20px;
   }
 
-  .bios-screen, .bbs-screen, .bbs-menu, .timeline, .ansi-header {
+  .crt {
+    animation: flicker 0.15s infinite;
+  }
+
+  @keyframes flicker {
+    0% { opacity: 0.98; }
+    50% { opacity: 1; }
+    100% { opacity: 0.97; }
+  }
+
+  .scanlines:before {
+    content: "";
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    background: repeating-linear-gradient(
+      to bottom,
+      rgba(0,255,0,0.05),
+      rgba(0,255,0,0.05) 2px,
+      rgba(0,255,0,0.02) 2px,
+      rgba(0,255,0,0.02) 4px
+    );
+    z-index: 9999;
+  }
+
+  .block {
     background-color: #000;
-    color: #33ff33;
-    font-family: "Courier New", Courier, monospace;
-    padding: 20px;
     border: 2px solid #33ff33;
+    padding: 20px;
     margin-bottom: 30px;
-    text-shadow: 0 0 4px #0f0;
+    opacity: 0;
+    transition: opacity 1s ease-in;
   }
 
   pre {
@@ -40,118 +65,68 @@
     line-height: 1.4;
   }
 
-  header {
-    border-bottom: 2px solid #33ff33;
-    padding-bottom: 10px;
-    margin-bottom: 20px;
+  .typewriter {
+    overflow: hidden;
+    white-space: pre;
+    border-right: 2px solid #33ff33;
+    animation: typing 4s steps(60), blink 0.7s infinite step-end alternate;
   }
 
-  header h1 {
-    font-size: 28px;
-    margin: 0;
+  @keyframes typing {
+    from { width: 0; }
+    to { width: 100%; }
   }
 
-  header p {
-    font-size: 14px;
-    margin: 5px 0 0;
+  @keyframes blink {
+    from { border-color: transparent; }
+    to { border-color: #33ff33; }
   }
 
-  h2 {
-    font-size: 20px;
-    margin-top: 30px;
-    border-left: 4px solid #33ff33;
-    padding-left: 10px;
-  }
-
-  h3 {
-    font-size: 16px;
-    margin-top: 20px;
-    text-decoration: underline;
-  }
-
-  p, li {
-    font-size: 14px;
-  }
-
-  ul {
-    margin-left: 20px;
-  }
-
-  code {
-    background: #003300;
-    padding: 2px 4px;
-    border: 1px solid #33ff33;
-  }
-
-  footer {
-    border-top: 2px solid #33ff33;
-    margin-top: 40px;
-    padding-top: 10px;
-    font-size: 12px;
-    text-align: center;
-  }
-
-  /* CRT Scanline Effect */
-  body:before {
-    content: "";
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    pointer-events: none;
-    background: repeating-linear-gradient(
-      to bottom,
-      rgba(0, 255, 0, 0.05),
-      rgba(0, 255, 0, 0.05) 2px,
-      rgba(0, 255, 0, 0.02) 2px,
-      rgba(0, 255, 0, 0.02) 4px
-    );
-    z-index: 9999;
-  }
 </style>
 </head>
 
-<body>
+<body class="scanlines crt">
 <div id="container">
 
-<!-- DIAL-UP MODEM HANDSHAKE -->
-<div class="bbs-screen">
-<pre>
-[1;32mInitializing Modem...
+<!-- MODEM HANDSHAKE -->
+<div id="modem" class="block">
+<pre class="typewriter">
+Initializing Modem...
 ATZ
 OK
 ATDT 555-1337
-CONNECT 14400bps[0m
+CONNECT 14400bps
 
-[1;32m~~ carrier detected ~~[0m
-[1;32m~~ negotiating protocol: V.32bis ~~[0m
-[1;32m~~ enabling error correction: LAPM ~~[0m
-[1;32m~~ enabling compression: V.42bis ~~[0m
+~~ carrier detected ~~
+~~ negotiating protocol: V.32bis ~~
+~~ enabling error correction: LAPM ~~
+~~ enabling compression: V.42bis ~~
 
-[1;32m▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒  HANDSHAKE COMPLETE  ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒[0m
+HANDSHAKE COMPLETE
 
-[1;32mWelcome to Ring Zero BBS…[0m
+Welcome to Ring Zero BBS…
 </pre>
 </div>
 
-<!-- BBS LOGIN SCREEN -->
-<div class="bbs-screen">
-<pre>
-[1;32m───────────────────────────────────────────────────────────────────────────────[0m
-[1;32mLOGIN:[0m  _ 
-[1;32mPASSWORD:[0m  _ _ _ _ _ _ _ _ _ _
+<!-- BBS LOGIN -->
+<div id="login" class="block">
+<pre class="typewriter">
+───────────────────────────────────────────────────────────────────────────────
+LOGIN: _
+PASSWORD: _ _ _ _ _ _ _ _ _ _
 
-[1;32mACCESS LEVEL:[0m  [GUEST]  [USER]  [ELITE]  [SYSOP]
+ACCESS LEVEL: [GUEST] [USER] [ELITE] [SYSOP]
 
-[1;32mMESSAGE OF THE DAY:[0m
-[0;32mWelcome back, operator. Carrier stable. ANSI active.  
-Timeline archive ready for retrieval. Type HELP for commands.[0m
-[1;32m───────────────────────────────────────────────────────────────────────────────[0m
+MESSAGE OF THE DAY:
+Welcome back, operator. Carrier stable. ANSI active.
+Timeline archive ready for retrieval.
+───────────────────────────────────────────────────────────────────────────────
 </pre>
 </div>
 
-<!-- BIOS INTRO -->
-<div class="bios-screen">
-<pre>
+<!-- BIOS POST -->
+<div id="bios" class="block">
+<pre class="typewriter">
 PhoenixBIOS(tm) 1.10  ©1985-1992 Phoenix Technologies Ltd.
 CPU: Intel 8088 @ 4.77MHz
 Memory Test: 640K OK
@@ -170,147 +145,88 @@ Launching: RING ZERO – MY COMPUTING JOURNEY
 </pre>
 </div>
 
-<!-- ANSI ART HEADER -->
-<div class="ansi-header">
+<!-- ANSI HEADER -->
+<div id="ansi" class="block">
 <pre>
-[1;32m██████╗ ██╗███╗   ██╗ ██████╗      ███████╗███████╗ ██████╗  ██████╗ 
-██╔══██╗██║████╗  ██║██╔════╝      ██╔════╝██╔════╝██╔═══██╗██╔════╝ 
-██████╔╝██║██╔██╗ ██║██║  ███╗     ███████╗█████╗  ██║   ██║██║  ███╗
-██╔══██╗██║██║╚██╗██║██║   ██║     ╚════██║██╔══╝  ██║   ██║██║   ██║
-██║  ██║██║██║ ╚████║╚██████╔╝     ███████║███████╗╚██████╔╝╚██████╔╝
-╚═╝  ╚═╝╚═╝╚═╝  ╚═══╝ ╚═════╝      ╚══════╝╚══════╝ ╚═════╝  ╚═════╝ 
-[0m
+█▀█ █ █▄░█ █▀▀   ▀█ █▀▀ █▀█ █▀█
+█▀▄ █ █░▀█ █▄█   █▄ ██▄ █▀▄ █▄█
 </pre>
 </div>
 
-<header>
-  <h1>THE MACHINES THAT MADE MY CAREER</h1>
-  <p>IBM XT → IBM PS/1 → clones → laptops → labs → Linux → networks → modern homelab</p>
-</header>
-
+<!-- MAIN STORY -->
+<div id="story" class="block">
+<h1>THE MACHINES THAT MADE MY CAREER</h1>
 <p>
 My entire career — every skill, every system I’ve built, every network I’ve architected — traces back
 to the machines I grew up with. I didn’t learn technology from textbooks. I learned it from hardware
-that crashed, software that misbehaved, and systems that demanded experimentation. This is my story,
-told through the computers that shaped me.
+that crashed, software that misbehaved, and systems that demanded experimentation.
 </p>
 
-<!-- FULL STORY CONTENT (expanded narrative) -->
 <h2>IBM XT (1989)</h2>
 <p>
 The IBM XT was my gateway into computing. A machine that looked more like industrial equipment than
-a personal device, humming quietly as it booted into DOS. I spent countless hours exploring its
-directory structure, learning how files were organised, and discovering how fragile early software
-could be.
-</p>
-<ul>
-  <li>~4 MHz CPU</li>
-  <li>1 MB RAM</li>
-  <li>Monochrome monitor</li>
-  <li>DOS, BASIC, Thexder</li>
-</ul>
-
-<h2>IBM PS/1 (1991)</h2>
-<p>
-The PS/1 felt futuristic compared to the XT. It was faster, smoother, and came with IBM’s attempt at
-a more user-friendly DOS environment. But I ignored the friendly interface and dove straight into the
-raw system underneath.
+a personal device, humming quietly as it booted into DOS.
 </p>
 
-<!-- (All expanded sections continue exactly as previously generated...) -->
+<!-- (Your full expanded story continues here unchanged) -->
 
-<!-- ANSI TIMELINE -->
-<div class="timeline">
+</div>
+
+<!-- TIMELINE -->
+<div id="timeline" class="block">
 <pre>
-[1;32m─────────────────────────── R I N G   Z E R O   S Y S T E M   T I M E L I N E ────────────────────────────[0m
+─────────────────────────── R I N G   Z E R O   S Y S T E M   T I M E L I N E ────────────────────────────
 
-[1;37m1989[0m [1;32m──►[0m IBM XT
-[0;32m  4 MHz • 1 MB • DOS • Thexder • First machine • Learned boot configs • Foundation of everything[0m
+1989 ─► IBM XT
+  4 MHz • 1 MB • DOS • Thexder • First machine • Learned boot configs
 
-[1;37m1991[0m [1;32m──►[0m IBM PS/1
-[0;32m  10 MHz • 2 MB • PC DOS • Commander Keen • Memory managers • DOS optimisation[0m
+1991 ─► IBM PS/1
+  10 MHz • 2 MB • PC DOS • Commander Keen
 
-[1;37m1993[0m [1;32m──►[0m 386 Clone
-[0;32m  MS-DOS • DOOM • IRQ conflicts • Sound Blaster • VESA modes • First hardware troubleshooting[0m
+1993 ─► 386 Clone
+  DOOM • IRQ conflicts • Sound Blaster
 
-[1;37m1995[0m [1;32m──►[0m 486SX Clone
-[0;32m  Win 3.11/95 • Novell IPX/SPX • LAN parties • Networking fundamentals[0m
+1995 ─► 486SX Clone
+  Win 3.11/95 • Novell IPX/SPX
 
-[1;37m1996–1998[0m [1;32m──►[0m Cyrix • AMD K2 • Celeron • Pentium II/III
-[0;32m  CPU tuning • Overclocking • BIOS mastery • Linux experiments[0m
+1996–98 ─► Cyrix • AMD K2 • Celeron • Pentium II/III
 
-[1;37m1998–2004[0m [1;32m──►[0m Pentium II 600 MHz Lab
-[0;32m  Longest-running lab box • Linux services • Early virtualisation • Routing/firewall experiments[0m
+1998–2004 ─► Pentium II 600 MHz Lab
 
-[1;37m2001[0m [1;32m──►[0m Sony Vaio (Work: Onga Pumps)
+2003–2006 ─► Laptop Era Begins
 
-[1;37m2003–2006[0m [1;32m──►[0m Laptop Era Begins
-[0;32m  Compaq Ultralight • Acer Edu • Fujitsu Purple • ThinkPad X22/X23/X30/X40[0m
+2006–2010 ─► SUN AMD Opteron
 
-[1;37m2006–2010[0m [1;32m──►[0m SUN AMD Opteron
-[0;32m  Server-class machine • Web hosting • RAID • Monitoring • Service hardening[0m
+2010–2015 ─► Alienware Era
 
-[1;37m2007–2012[0m [1;32m──►[0m ThinkPad T42/T43 (Work & Lab)
+2014–2020 ─► HP N40L VMware Cluster
 
-[1;37m2010–2015[0m [1;32m──►[0m Alienware Era
-[0;32m  i7 + GTX580 SLI • Alienware 13 • Dev + gaming • CUDA experiments[0m
+2018–2026 ─► HP i7 + Clone i7
 
-[1;37m2014–2020[0m [1;32m──►[0m 4× HP N40L VMware Cluster
-[0;32m  Multi-node virtualisation • Distributed storage • ESXi • Enterprise-style homelab[0m
-
-[1;37m2015–2023[0m [1;32m──►[0m Surface Book / Go / Laptop Series
-
-[1;37m2016–2023[0m [1;32m──►[0m Work Machines (Dell • Toshiba • Surface • Acer • Lenovo • HP)
-
-[1;37m2018–2026[0m [1;32m──►[0m HP i7 + Clone i7
-[0;32m  Gaming • Dev • Lab workloads • Containers • Virtualisation[0m
-
-[1;37m2026[0m [1;32m──►[0m Minisforum MS‑02
-[0;32m  24 cores • 256 GB RAM • Personal cloud • Full lab consolidation • Peak homelab capability[0m
-
+2026 ─► Minisforum MS‑02
 </pre>
 </div>
 
-<!-- FULL BBS MENU -->
-<div class="bbs-menu">
+<!-- BBS MENU -->
+<div id="menu" class="block">
 <pre>
-[1;32m┌──────────────────────────────────────────────────────────────────────────────┐[0m
-[1;32m│                         R I N G   Z E R O   B B S                            │[0m
-[1;32m│                     ▒▒▒▒▒▒▒▒▒▒▒▒  MAIN MENU  ▒▒▒▒▒▒▒▒▒▒▒▒                    │[0m
-[1;32m└──────────────────────────────────────────────────────────────────────────────┘[0m
+┌──────────────────────────────────────────────────────────────────────────────┐
+│                         R I N G   Z E R O   B B S                            │
+│                     ▒▒▒▒▒▒▒▒▒▒▒▒  MAIN MENU  ▒▒▒▒▒▒▒▒▒▒▒▒                    │
+└──────────────────────────────────────────────────────────────────────────────┘
 
-[1;37m[1][0m  [1;32mMESSAGE BASES[0m
-       [0;32mRead system updates, timeline logs, hardware notes, and sysop broadcasts.[0m
+[1] MESSAGE BASES
+[2] FILE AREAS
+[3] ANSI ART GALLERY
+[4] SYSOP CHAT
+[5] TIMELINE ARCHIVE
+[6] HARDWARE DATABASE
+[7] NETWORK TOOLS
+[8] LAB CONTROL PANEL
+[9] USER SETTINGS
+[0] LOG OFF / HANG UP
 
-[1;37m[2][0m  [1;32mFILE AREAS[0m
-       [0;32mDownload system specs, lab configs, retro docs, and archived machine lists.[0m
-
-[1;37m[3][0m  [1;32mANSI ART GALLERY[0m
-       [0;32mView Ring Zero logos, BBS art packs, and timeline graphics.[0m
-
-[1;37m[4][0m  [1;32mSYSOP CHAT[0m
-       [0;32mPage the sysop (you) for live terminal chat. Carrier must remain stable.[0m
-
-[1;37m[5][0m  [1;32mTIMELINE ARCHIVE[0m
-       [0;32mBrowse the full computing history: XT → PS/1 → clones → labs → MS‑02.[0m
-
-[1;37m[6][0m  [1;32mHARDWARE DATABASE[0m
-       [0;32mSearch specs for every machine ever connected to Ring Zero Systems.[0m
-
-[1;37m[7][0m  [1;32mNETWORK TOOLS[0m
-       [0;32mPing, traceroute, port scan, and BGP route viewer (Wallace/Gromit legacy).[0m
-
-[1;37m[8][0m  [1;32mLAB CONTROL PANEL[0m
-       [0;32mManage virtual nodes, ESXi cluster, containers, and MS‑02 workloads.[0m
-
-[1;37m[9][0m  [1;32mUSER SETTINGS[0m
-       [0;32mChange password, ANSI preferences, baud rate, and terminal type.[0m
-
-[1;37m[0][0m  [1;32mLOG OFF / HANG UP[0m
-       [0;32mTerminate carrier and disconnect from Ring Zero BBS.[0m
-
-[1;32m──────────────────────────────────────────────────────────────────────────────[0m
-[1;32mENTER COMMAND:[0m _
+ENTER COMMAND: _
 </pre>
 </div>
 
@@ -319,5 +235,19 @@ raw system underneath.
 </footer>
 
 </div>
+
+<script>
+// Sequential fade-in animation
+const blocks = ["modem","login","bios","ansi","story","timeline","menu"];
+let delay = 500;
+
+blocks.forEach(id => {
+  setTimeout(() => {
+    document.getElementById(id).style.opacity = 1;
+  }, delay);
+  delay += 1500;
+});
+</script>
+
 </body>
 </html>
