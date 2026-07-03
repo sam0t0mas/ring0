@@ -157,8 +157,11 @@ Click a command from the menu to continue…
 // =========================================================
 // CONFIG
 // =========================================================
-const SPEED_CHARS_PER_SEC = 7000;   // ~56kbps
+const SPEED_CHARS_PER_SEC = 200;   // ~56kbps
 const CHUNK = 40;
+
+// const SPEED_CHARS_PER_SEC = 7000;   // ~56kbps
+// const CHUNK = 40;
 const INTERVAL = (CHUNK / SPEED_CHARS_PER_SEC) * 1000;
 
 const term = document.getElementById("terminal");
