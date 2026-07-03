@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Ring Zero – My Computing Journey</title>
+<title>Ring Zero – Retro BBS Terminal</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
@@ -15,12 +15,6 @@
     line-height: 1.5;
     text-shadow: 0 0 3px #0f0;
     overflow-x: hidden;
-  }
-
-  #container {
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 20px;
   }
 
   .crt {
@@ -49,320 +43,245 @@
     z-index: 9999;
   }
 
-  .block {
-    background-color: #000;
-    border: 2px solid #33ff33;
-    padding: 20px;
-    margin-bottom: 30px;
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 1.2s ease-out, transform 1.2s ease-out;
-  }
-
-  .block.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
   pre {
-    white-space: pre;
-    font-size: 13px;
-    line-height: 1.4;
-  }
-
-  .typewriter {
-    overflow: hidden;
-    white-space: pre;
-    border-right: 2px solid #33ff33;
-    animation: typing 4s steps(60), blink 0.7s infinite step-end alternate;
-  }
-
-  @keyframes typing {
-    from { width: 0; }
-    to { width: 100%; }
-  }
-
-  @keyframes blink {
-    from { border-color: transparent; }
-    to { border-color: #33ff33; }
-  }
-
-  .cmd {
-    display: block;
-    cursor: pointer;
-    color: #33ff33;
-    text-shadow: 0 0 4px #0f0;
-  }
-
-  .cmd:hover {
-    color: #55ff55;
-    text-shadow: 0 0 6px #0f0;
-  }
-
-  .bbs-output {
-    background-color: #000;
-    border: 2px solid #33ff33;
-    padding: 20px;
-    margin-top: 20px;
-    text-shadow: 0 0 4px #0f0;
-  }
-
-  #bbs-text {
     white-space: pre-wrap;
-    font-size: 13px;
+    font-size: 14px;
     line-height: 1.4;
   }
 </style>
 </head>
 
 <body class="scanlines crt">
-<div id="container">
+<pre id="terminal"></pre>
 
-<!-- BIOS FIRST -->
-<div id="bios" class="block">
-<pre class="typewriter">
+<!-- TYPEWRITER SOUND -->
+<audio id="keyclick" src="data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAIA+AAACABAAZGF0YQAAAAA=" preload="auto"></audio>
+
+<script>
+// =========================================================
+// ORIGINAL CONTENT FROM ACTIVE TAB (SAFE TEXT ONLY)
+// =========================================================
+
+const ORIGINAL_CONTENT = `
 PhoenixBIOS(tm) 1.10 ©1985-1992 Phoenix Technologies Ltd.
 CPU: Intel 8088 @ 4.77MHz
 Memory Test: 640K OK
 Keyboard... Detected
 Video Adapter... MDA
 Fixed Disk... Present
-
 Initializing System...
 Loading Personal History Module...
 Scanning Hardware Timeline...
 Enumerating Machines...
-
 Boot Sequence Complete.
+
 Launching: RING ZERO – MY COMPUTING JOURNEY
 -----------------------------------------------
-</pre>
-</div>
 
-<!-- MODEM SECOND -->
-<div id="modem" class="block">
-<pre class="typewriter">
 Initializing Modem...
-ATZ
-OK
+ATZ OK
 ATDT 555-1337
 CONNECT 14400bps
-
 ~~ carrier detected ~~
 ~~ negotiating protocol: V.32bis ~~
 ~~ enabling error correction: LAPM ~~
 ~~ enabling compression: V.42bis ~~
-
 HANDSHAKE COMPLETE
-
 Welcome to Ring Zero BBS…
-</pre>
-</div>
 
-<!-- BBS LOGIN THIRD -->
-<div id="login" class="block">
-<pre class="typewriter">
 ───────────────────────────────────────────────────────────────────────────────
 LOGIN: _
 PASSWORD: _ _ _ _ _ _ _ _ _ _
-
 ACCESS LEVEL: [GUEST] [USER] [ELITE] [SYSOP]
-
 MESSAGE OF THE DAY:
 Welcome back, operator. Carrier stable. ANSI active.
 Timeline archive ready for retrieval.
 ───────────────────────────────────────────────────────────────────────────────
-</pre>
-</div>
 
-<!-- ANSI HEADER -->
-<div id="ansi" class="block">
-<pre>
-       .__                                             
-_______|__| ____    ____   ________ ___________  ____  
-\_  __ \  |/    \  / ___\  \___   // __ \_  __ \/  _ \ 
- |  | \/  |   |  \/ /_/  >  /    /\  ___/|  | \(  <_> )
- |__|  |__|___|  /\___  /  /_____ \\___  >__|   \____/ 
-               \//_____/         \/    \/              
 TIN is NOT SIN!
-</pre>
-</div>
 
-<!-- STORY -->
-<div id="story" class="block">
-<p>
-My entire career — every skill, every system I’ve built, every network I’ve architected — traces back
-to the machines I grew up with. I didn’t learn technology from textbooks. I learned it from hardware
-that crashed, software that misbehaved, and systems that demanded experimentation.
-</p>
-</div>
+My entire career — every skill, every system I’ve built, every network I’ve architected — traces back to the machines I grew up with.
+I didn’t learn technology from textbooks.
+I learned it from hardware that crashed, software that misbehaved, and systems that demanded experimentation.
 
-<!-- TIMELINE -->
-<div id="timeline" class="block">
-<pre>
 ─────────────────────────── R I N G Z E R O S Y S T E M T I M E L I N E ────────────────────────────
-
-1989 ─► IBM XT
-4 MHz • 1 MB • DOS • Thexder • First machine • Learned boot configs
-
-1991 ─► IBM PS/1
-10 MHz • 2 MB • PC DOS • Commander Keen
-
-1993 ─► 386 Clone
-DOOM • IRQ conflicts • Sound Blaster
-
-1995 ─► 486SX Clone
-Win 3.11/95 • Novell IPX/SPX
-
+1989 ─► IBM XT 4 MHz • 1 MB • DOS • Thexder • First machine • Learned boot configs
+1991 ─► IBM PS/1 10 MHz • 2 MB • PC DOS • Commander Keen
+1993 ─► 386 Clone DOOM • IRQ conflicts • Sound Blaster
+1995 ─► 486SX Clone Win 3.11/95 • Novell IPX/SPX
 1996–98 ─► Cyrix • AMD K2 • Celeron • Pentium II/III
-
 1998–2004 ─► Pentium II 600 MHz Lab
-
 2003–2006 ─► Laptop Era Begins
-
 2006–2010 ─► SUN AMD Opteron
-
 2010–2015 ─► Alienware Era
-
 2014–2020 ─► HP N40L VMware Cluster
-
 2018–2026 ─► HP i7 + Clone i7
-
 2026 ─► Minisforum MS‑02
-</pre>
-</div>
 
-<!-- INTERACTIVE BBS MENU -->
-<div id="menu" class="block">
-<pre>
 ┌──────────────────────────────────────────────────────────────────────────────┐
-│                         R I N G   Z E R O   B B S                            │
-│                     ▒▒▒▒▒▒▒▒▒▒▒▒  MAIN MENU  ▒▒▒▒▒▒▒▒▒▒▒▒                    │
+│ R I N G Z E R O B B S │
+│ ▒▒▒▒▒▒▒▒▒▒▒▒ MAIN MENU ▒▒▒▒▒▒▒▒▒▒▒▒ │
 └──────────────────────────────────────────────────────────────────────────────┘
+[1] MESSAGE BASES
+[2] FILE AREAS
+[3] ANSI ART GALLERY
+[4] SYSOP CHAT
+[5] TIMELINE ARCHIVE
+[6] HARDWARE DATABASE
+[7] NETWORK TOOLS
+[8] LAB CONTROL PANEL
+[9] USER SETTINGS
+[0] LOG OFF / HANG UP
 
-<span class="cmd" data-cmd="messages">[1] MESSAGE BASES</span>
-<span class="cmd" data-cmd="files">[2] FILE AREAS</span>
-<span class="cmd" data-cmd="ansi">[3] ANSI ART GALLERY</span>
-<span class="cmd" data-cmd="chat">[4] SYSOP CHAT</span>
-<span class="cmd" data-cmd="timeline">[5] TIMELINE ARCHIVE</span>
-<span class="cmd" data-cmd="hardware">[6] HARDWARE DATABASE</span>
-<span class="cmd" data-cmd="network">[7] NETWORK TOOLS</span>
-<span class="cmd" data-cmd="lab">[8] LAB CONTROL PANEL</span>
-<span class="cmd" data-cmd="settings">[9] USER SETTINGS</span>
-<span class="cmd" data-cmd="logout">[0] LOG OFF / HANG UP</span>
-
-──────────────────────────────────────────────────────────────────────────────
-CLICK A COMMAND ABOVE
-</pre>
-</div>
-
-<div id="bbs-output" class="bbs-output">
-<pre id="bbs-text">
 [ RING ZERO BBS OUTPUT WINDOW ]
 Click a command from the menu to continue…
-</pre>
-</div>
-
-<!-- AUDIO -->
-<audio id="biosBeep">
-  <source src="https://ringze.ro/assets/sfx/bios-beep.mp3" type="audio/mpeg">
-</audio>
-
-<audio id="modemSfx">
-  <source src="https://ringze.ro/assets/sfx/modem-14400.mp3" type="audio/mpeg">
-</audio>
-
-<footer>
-RETRO COMPUTING LOG · CRT MODE ENABLED · RING ZERO
-</footer>
-
-</div>
-<script>
-// --- CONFIG ---
-const SPEED_CHARS_PER_SEC = 7000;   // ~56kbps
-const CHUNK = 40;                   // characters per tick
-const INTERVAL = (CHUNK / SPEED_CHARS_PER_SEC) * 1000;
-
-// --- CAPTURE ORIGINAL PAGE ---
-const original = document.documentElement.innerHTML;
-
-// --- CLEAR PAGE ---
-document.documentElement.innerHTML = `
-<body style="background:black;color:#33ff33;font-family:Courier New,monospace;">
-<pre id="terminal"></pre>
-</body>
 `;
 
-const term = document.getElementById("terminal");
+// =========================================================
+// CONFIG
+// =========================================================
+const SPEED_CHARS_PER_SEC = 7000;   // ~56kbps
+const CHUNK = 40;
+const INTERVAL = (CHUNK / SPEED_CHARS_PER_SEC) * 1000;
 
-// --- FLASHING PROMPT ---
-let promptVisible = true;
+const term = document.getElementById("terminal");
+const click = document.getElementById("keyclick");
+
+// =========================================================
+// ANSI COLOR SUPPORT
+// =========================================================
+function ansiToHtml(text) {
+  return text
+    .replace(/\x1b
+
+\[32m/g, '<span style="color:#33ff33">')
+    .replace(/\x1b
+
+\[31m/g, '<span style="color:#ff3333">')
+    .replace(/\x1b
+
+\[34m/g, '<span style="color:#3333ff">')
+    .replace(/\x1b
+
+\[0m/g, '</span>');
+}
+
+// =========================================================
+// SCROLLING BUFFER
+// =========================================================
+function scrollToBottom() {
+  window.scrollTo({ top: document.body.scrollHeight });
+}
+
+// =========================================================
+// TYPEWRITER SOUND
+// =========================================================
+function playClick() {
+  click.currentTime = 0;
+  click.play();
+}
+
+// =========================================================
+// FLASHING CURSOR
+// =========================================================
+let cursorVisible = true;
 setInterval(() => {
-  promptVisible = !promptVisible;
-  const p = promptVisible ? "▮" : " ";
-  term.innerHTML = term.innerHTML.replace(/▮| $/, p);
+  cursorVisible = !cursorVisible;
+  const cursor = cursorVisible ? "▮" : " ";
+  term.innerHTML = term.innerHTML.replace(/▮| $/, cursor);
 }, 500);
 
-// --- STREAM OUTPUT LIKE A MODEM ---
-let i = 0;
-function stream() {
-  if (i >= original.length) return;
-  const slice = original.slice(i, i + CHUNK);
-  i += CHUNK;
+// =========================================================
+// DIAL-UP HANDSHAKE
+// =========================================================
+const handshake = [
+  "ATDT 555-1337\r\n",
+  "CONNECT 56000\r\n",
+  "CARRIER DETECT\r\n",
+  "NEGOTIATING PROTOCOL...\r\n",
+  "PPP LCP CONFIGURATION\r\n",
+  "AUTHENTICATING...\r\n",
+  "WELCOME TO RING ZERO BBS\r\n\n"
+];
 
-  // append text + prompt
-  term.textContent += slice;
-  term.textContent = term.textContent.replace(/▮| $/, "") + "▮";
-
-  setTimeout(stream, INTERVAL);
+function playHandshake(callback) {
+  let i = 0;
+  function next() {
+    if (i >= handshake.length) return callback();
+    term.textContent += handshake[i];
+    scrollToBottom();
+    i++;
+    setTimeout(next, 300 + Math.random() * 200);
+  }
+  next();
 }
 
-stream();
-</script>
+// =========================================================
+// MODEM-SPEED STREAMING OF ORIGINAL CONTENT
+// =========================================================
+function streamContent(callback) {
+  let i = 0;
+  function stream() {
+    if (i >= ORIGINAL_CONTENT.length) return callback();
 
-<script>
-// Sequential fade-in + sound
-function showSequence(id, delay, sound) {
-  setTimeout(() => {
-    const el = document.getElementById(id);
-    el.classList.add("visible");
-    if (sound) {
-      const audio = document.getElementById(sound);
-      audio.volume = 0.4;
-      audio.play().catch(()=>{});
-    }
-  }, delay);
+    const slice = ORIGINAL_CONTENT.slice(i, i + CHUNK);
+    i += CHUNK;
+
+    playClick();
+    term.innerHTML += ansiToHtml(slice);
+    term.innerHTML = term.innerHTML.replace(/▮| $/, "") + "▮";
+
+    scrollToBottom();
+    setTimeout(stream, INTERVAL);
+  }
+  stream();
 }
 
-// BIOS → MODEM → BBS → ANSI → STORY → TIMELINE → MENU
-showSequence("bios", 500, "biosBeep");
-showSequence("modem", 4500, "modemSfx");
-showSequence("login", 12000, null);
-showSequence("ansi", 15000, null);
-showSequence("story", 17000, null);
-showSequence("timeline", 19000, null);
-showSequence("menu", 21000, null);
-
-// Interactive BBS menu
-const output = document.getElementById("bbs-text");
-
-const responses = {
-  messages: `[ MESSAGE BASES ]\nSystem updates, timeline logs, hardware notes, sysop broadcasts.`,
-  files: `[ FILE AREAS ]\nDownload system specs, lab configs, retro docs, archived machine lists.`,
-  ansi: `[ ANSI ART GALLERY ]\nRing Zero logos, BBS art packs, timeline graphics.`,
-  chat: `[ SYSOP CHAT ]\nPaging sysop...\nNo response. Sysop may be in the lab.`,
-  timeline: `[ TIMELINE ARCHIVE ]\nXT → PS/1 → clones → Linux → labs → MS‑02.`,
-  hardware: `[ HARDWARE DATABASE ]\nSpecs for every machine connected to Ring Zero Systems.`,
-  network: `[ NETWORK TOOLS ]\nPing, traceroute, port scan, BGP route viewer.`,
-  lab: `[ LAB CONTROL PANEL ]\nManage ESXi nodes, containers, MS‑02 workloads.`,
-  settings: `[ USER SETTINGS ]\nChange password, ANSI preferences, baud rate, terminal type.`,
-  logout: `[ LOG OFF ]\nHanging up...\n~~ carrier lost ~~\nConnection terminated.`
+// =========================================================
+// COMMAND INTERPRETER
+// =========================================================
+const commands = {
+  help: "Available commands:\nhelp\nabout\nbbs\nexit",
+  about: "Ring Zero BBS — Est. 1993\nSysOp: sam",
+  bbs: "Loading BBS menu...\n[1] Messages\n[2] Files\n[3] Chat\n[4] Logoff",
+  exit: "Goodbye."
 };
 
-document.querySelectorAll(".cmd").forEach(el => {
-  el.addEventListener("click", () => {
-    const cmd = el.getAttribute("data-cmd");
-    output.textContent = responses[cmd];
+function startInterpreter() {
+  let buffer = "";
+
+  term.textContent += "\n> ";
+
+  window.addEventListener("keydown", e => {
+    if (e.key.length === 1) {
+      buffer += e.key;
+      term.textContent += e.key;
+      playClick();
+    }
+
+    if (e.key === "Enter") {
+      term.textContent += "\n";
+      const cmd = buffer.trim();
+      buffer = "";
+
+      if (commands[cmd]) {
+        term.textContent += commands[cmd] + "\n";
+      } else {
+        term.textContent += "Unknown command\n";
+      }
+
+      term.textContent += "> ";
+      scrollToBottom();
+    }
+  });
+}
+
+// =========================================================
+// BOOT SEQUENCE
+// =========================================================
+playHandshake(() => {
+  streamContent(() => {
+    startInterpreter();
   });
 });
 </script>
