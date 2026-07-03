@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <link rel="icon" href="/favicon_multi_resolution.ico" type="image/x-icon">
-
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Ring Zero – Retro BBS Terminal</title>
+<title>BBSTerm: Ring Zer0</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
@@ -50,14 +50,24 @@
     font-size: 14px;
     line-height: 1.4;
   }
+
+  .cursor {
+    display: inline-block;
+    width: 10px;
+    background-color: #33ff33;
+    margin-left: 2px;
+  }
 </style>
 </head>
 
 <body class="scanlines crt">
-<pre id="terminal"></pre>
+<pre id="terminal"></pre><span id="cursor" class="cursor">&nbsp;</span>
 
 <script>
-// --- ORIGINAL CONTENT ---
+// =========================================================
+// ORIGINAL CONTENT (SAFE TEXT)
+// =========================================================
+
 const ORIGINAL_CONTENT = `
 PhoenixBIOS(tm) 1.10 ©1985-1992 Phoenix Technologies Ltd.
 CPU: Intel 8088 @ 4.77MHz
@@ -93,7 +103,12 @@ MESSAGE OF THE DAY:
 Welcome back, operator. Carrier stable. ANSI active.
 Timeline archive ready for retrieval.
 ───────────────────────────────────────────────────────────────────────────────
-
+__________.__                 __________            _______   
+\______   \__| ____    ____   \____    /___________ \   _  \  
+ |       _/  |/    \  / ___\    /     // __ \_  __ \/  /_\  \ 
+ |    |   \  |   |  \/ /_/  >  /     /\  ___/|  | \/\  \_/   \
+ |____|_  /__|___|  /\___  /  /_______ \___  >__|    \_____  /
+        \/        \//_____/           \/   \/              \/ 
 TIN is NOT SIN!
 
 My entire career — every skill, every system I’ve built, every network I’ve architected — traces back to the machines I grew up with.
@@ -115,8 +130,14 @@ I learned it from hardware that crashed, software that misbehaved, and systems t
 2026 ─► Minisforum MS‑02
 
 ┌──────────────────────────────────────────────────────────────────────────────┐
-│ R I N G Z E R O B B S │
-│ ▒▒▒▒▒▒▒▒▒▒▒▒ MAIN MENU ▒▒▒▒▒▒▒▒▒▒▒▒ │
+│ __________.__                 __________            _______                  |  
+| \______   \__| ____    ____   \____    /___________ \   _  \                 |
+|  |       _/  |/    \  / ___\    /     // __ \_  __ \/  /_\  \                |
+|  |    |   \  |   |  \/ /_/  >  /     /\  ___/|  | \/\  \_/   \               |
+|  |____|_  /__|___|  /\___  /  /_______ \___  >__|    \_____  /               |
+|        \/        \//_____/           \/   \/              \/                 |
+|        R I N G Z E R O B B S                                                 │ 
+│ ▒▒▒▒▒▒▒▒▒▒▒▒ MAIN MENU ▒▒▒▒▒▒▒▒▒▒▒▒                                          │
 └──────────────────────────────────────────────────────────────────────────────┘
 [1] MESSAGE BASES
 [2] FILE AREAS
@@ -133,19 +154,34 @@ I learned it from hardware that crashed, software that misbehaved, and systems t
 Click a command from the menu to continue…
 `;
 
-// --- CONFIG ---
+// =========================================================
+// CONFIG
+// =========================================================
 const SPEED_CHARS_PER_SEC = 7000;   // ~56kbps
 const CHUNK = 40;
 const INTERVAL = (CHUNK / SPEED_CHARS_PER_SEC) * 1000;
 
 const term = document.getElementById("terminal");
+const cursor = document.getElementById("cursor");
 
-// --- SCROLL ---
+// =========================================================
+// CURSOR BLINK (SAFE FOR EDGE)
+// =========================================================
+setInterval(() => {
+  cursor.style.visibility =
+    cursor.style.visibility === "hidden" ? "visible" : "hidden";
+}, 500);
+
+// =========================================================
+// SCROLLING BUFFER
+// =========================================================
 function scrollToBottom() {
   window.scrollTo({ top: document.body.scrollHeight });
 }
 
-// --- HANDSHAKE ---
+// =========================================================
+// DIAL-UP HANDSHAKE
+// =========================================================
 const handshake = [
   "ATDT 555-1337\r\n",
   "CONNECT 56000\r\n",
@@ -168,7 +204,9 @@ function playHandshake(callback) {
   next();
 }
 
-// --- STREAM CONTENT ---
+// =========================================================
+// MODEM-SPEED STREAMING OF ORIGINAL CONTENT
+// =========================================================
 function streamContent(callback) {
   let i = 0;
   function stream() {
@@ -184,7 +222,9 @@ function streamContent(callback) {
   stream();
 }
 
-// --- SIMPLE COMMAND PROMPT ---
+// =========================================================
+// COMMAND INTERPRETER
+// =========================================================
 const commands = {
   help: "Available commands:\nhelp\nabout\nbbs\nexit",
   about: "Ring Zero BBS — Est. 1993\nSysOp: sam",
@@ -194,6 +234,7 @@ const commands = {
 
 function startInterpreter() {
   let buffer = "";
+
   term.textContent += "\n> ";
 
   window.addEventListener("keydown", e => {
@@ -219,7 +260,9 @@ function startInterpreter() {
   });
 }
 
-// --- BOOT SEQUENCE ---
+// =========================================================
+// BOOT SEQUENCE
+// =========================================================
 playHandshake(() => {
   streamContent(() => {
     startInterpreter();
