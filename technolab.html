@@ -178,8 +178,13 @@ Timeline archive ready for retrieval.
 <!-- ANSI HEADER -->
 <div id="ansi" class="block">
 <pre>
-█▀█ █ █▄░█ █▀▀ ▀█ █▀▀ █▀█ █▀█ █▀▄ █ █░▀█ █▄█ █▄ ██▄ █▀▄ █▄█
-THE MACHINES THAT MADE MY CAREER
+       .__                                             
+_______|__| ____    ____   ________ ___________  ____  
+\_  __ \  |/    \  / ___\  \___   // __ \_  __ \/  _ \ 
+ |  | \/  |   |  \/ /_/  >  /    /\  ___/|  | \(  <_> )
+ |__|  |__|___|  /\___  /  /_____ \\___  >__|   \____/ 
+               \//_____/         \/    \/              
+TIN is NOT SIN!
 </pre>
 </div>
 
@@ -272,6 +277,48 @@ RETRO COMPUTING LOG · CRT MODE ENABLED · RING ZERO
 </footer>
 
 </div>
+<script>
+// --- CONFIG ---
+const SPEED_CHARS_PER_SEC = 7000;   // ~56kbps
+const CHUNK = 40;                   // characters per tick
+const INTERVAL = (CHUNK / SPEED_CHARS_PER_SEC) * 1000;
+
+// --- CAPTURE ORIGINAL PAGE ---
+const original = document.documentElement.innerHTML;
+
+// --- CLEAR PAGE ---
+document.documentElement.innerHTML = `
+<body style="background:black;color:#33ff33;font-family:Courier New,monospace;">
+<pre id="terminal"></pre>
+</body>
+`;
+
+const term = document.getElementById("terminal");
+
+// --- FLASHING PROMPT ---
+let promptVisible = true;
+setInterval(() => {
+  promptVisible = !promptVisible;
+  const p = promptVisible ? "▮" : " ";
+  term.innerHTML = term.innerHTML.replace(/▮| $/, p);
+}, 500);
+
+// --- STREAM OUTPUT LIKE A MODEM ---
+let i = 0;
+function stream() {
+  if (i >= original.length) return;
+  const slice = original.slice(i, i + CHUNK);
+  i += CHUNK;
+
+  // append text + prompt
+  term.textContent += slice;
+  term.textContent = term.textContent.replace(/▮| $/, "") + "▮";
+
+  setTimeout(stream, INTERVAL);
+}
+
+stream();
+</script>
 
 <script>
 // Sequential fade-in + sound
