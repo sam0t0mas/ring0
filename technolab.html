@@ -4,7 +4,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>RingZeroBBS</title>
+<title>Ring Zero – Retro BBS Terminal</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
@@ -56,14 +56,8 @@
 <body class="scanlines crt">
 <pre id="terminal"></pre>
 
-<!-- TYPEWRITER SOUND -->
-<audio id="keyclick" src="data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAIA+AAACABAAZGF0YQAAAAA=" preload="auto"></audio>
-
 <script>
-// =========================================================
-// ORIGINAL CONTENT (INSERTED SAFELY AS TEXT)
-// =========================================================
-
+// --- ORIGINAL CONTENT ---
 const ORIGINAL_CONTENT = `
 PhoenixBIOS(tm) 1.10 ©1985-1992 Phoenix Technologies Ltd.
 CPU: Intel 8088 @ 4.77MHz
@@ -139,63 +133,19 @@ I learned it from hardware that crashed, software that misbehaved, and systems t
 Click a command from the menu to continue…
 `;
 
-// =========================================================
-// CONFIG
-// =========================================================
+// --- CONFIG ---
 const SPEED_CHARS_PER_SEC = 7000;   // ~56kbps
 const CHUNK = 40;
 const INTERVAL = (CHUNK / SPEED_CHARS_PER_SEC) * 1000;
 
 const term = document.getElementById("terminal");
-const click = document.getElementById("keyclick");
 
-// =========================================================
-// ANSI COLOR SUPPORT
-// =========================================================
-function ansiToHtml(text) {
-  return text
-    .replace(/\x1b
-
-\[32m/g, '<span style="color:#33ff33">')
-    .replace(/\x1b
-
-\[31m/g, '<span style="color:#ff3333">')
-    .replace(/\x1b
-
-\[34m/g, '<span style="color:#3333ff">')
-    .replace(/\x1b
-
-\[0m/g, '</span>');
-}
-
-// =========================================================
-// SCROLLING BUFFER
-// =========================================================
+// --- SCROLL ---
 function scrollToBottom() {
   window.scrollTo({ top: document.body.scrollHeight });
 }
 
-// =========================================================
-// TYPEWRITER SOUND
-// =========================================================
-function playClick() {
-  click.currentTime = 0;
-  click.play();
-}
-
-// =========================================================
-// FLASHING CURSOR
-// =========================================================
-let cursorVisible = true;
-setInterval(() => {
-  cursorVisible = !cursorVisible;
-  const cursor = cursorVisible ? "▮" : " ";
-  term.innerHTML = term.innerHTML.replace(/▮| $/, cursor);
-}, 500);
-
-// =========================================================
-// DIAL-UP HANDSHAKE
-// =========================================================
+// --- HANDSHAKE ---
 const handshake = [
   "ATDT 555-1337\r\n",
   "CONNECT 56000\r\n",
@@ -218,9 +168,7 @@ function playHandshake(callback) {
   next();
 }
 
-// =========================================================
-// MODEM-SPEED STREAMING OF ORIGINAL CONTENT
-// =========================================================
+// --- STREAM CONTENT ---
 function streamContent(callback) {
   let i = 0;
   function stream() {
@@ -229,19 +177,14 @@ function streamContent(callback) {
     const slice = ORIGINAL_CONTENT.slice(i, i + CHUNK);
     i += CHUNK;
 
-    playClick();
-    term.innerHTML += ansiToHtml(slice);
-    term.innerHTML = term.innerHTML.replace(/▮| $/, "") + "▮";
-
+    term.textContent += slice;
     scrollToBottom();
     setTimeout(stream, INTERVAL);
   }
   stream();
 }
 
-// =========================================================
-// COMMAND INTERPRETER
-// =========================================================
+// --- SIMPLE COMMAND PROMPT ---
 const commands = {
   help: "Available commands:\nhelp\nabout\nbbs\nexit",
   about: "Ring Zero BBS — Est. 1993\nSysOp: sam",
@@ -251,14 +194,12 @@ const commands = {
 
 function startInterpreter() {
   let buffer = "";
-
   term.textContent += "\n> ";
 
   window.addEventListener("keydown", e => {
     if (e.key.length === 1) {
       buffer += e.key;
       term.textContent += e.key;
-      playClick();
     }
 
     if (e.key === "Enter") {
@@ -278,9 +219,7 @@ function startInterpreter() {
   });
 }
 
-// =========================================================
-// BOOT SEQUENCE
-// =========================================================
+// --- BOOT SEQUENCE ---
 playHandshake(() => {
   streamContent(() => {
     startInterpreter();
