@@ -86,10 +86,10 @@ Launching: into RING ZER0
 
 Initializing Modem...
 ATZ OK
-ATDT 555-1337
-CONNECT 14400bps
+ATDT 977-686-1337
+CONNECT 1200bps
 ~~ carrier detected ~~
-~~ negotiating protocol: V.32bis ~~
+~~ negotiating protocol: V.24bis ~~
 ~~ enabling error correction: LAPM ~~
 ~~ enabling compression: V.42bis ~~
 HANDSHAKE COMPLETE
@@ -166,8 +166,8 @@ Click a command from the menu to continue…
 // =========================================================
 // CONFIG
 // =========================================================
-const SPEED_CHARS_PER_SEC = 20;   // ~20bps
-const CHUNK = 10;
+const SPEED_CHARS_PER_SEC = 120;   // ~120bps
+const CHUNK = 20;
 
 // const SPEED_CHARS_PER_SEC = 7000;   // ~56kbps
 // const CHUNK = 40;
@@ -195,13 +195,13 @@ function scrollToBottom() {
 // DIAL-UP HANDSHAKE
 // =========================================================
 const handshake = [
-  "ATDT 555-1337\r\n",
+  "ATDT 13 11 66 *1337#\r\n",
   "CONNECT 56000\r\n",
   "CARRIER DETECT\r\n",
   "NEGOTIATING PROTOCOL...\r\n",
   "PPP LCP CONFIGURATION\r\n",
   "AUTHENTICATING...\r\n",
-  "WELCOME TO RING ZERO BBS\r\n\n"
+  "CONNECTED TO r0.lpar\r\n\n"
 ];
 
 function playHandshake(callback) {
