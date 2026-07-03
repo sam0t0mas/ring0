@@ -1,4 +1,3 @@
-<link rel="icon" href="/favicon_multi_resolution.ico" type="image/x-icon
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -56,7 +55,13 @@
     padding: 20px;
     margin-bottom: 30px;
     opacity: 0;
-    transition: opacity 1s ease-in;
+    transform: translateY(20px);
+    transition: opacity 1.2s ease-out, transform 1.2s ease-out;
+  }
+
+  .block.visible {
+    opacity: 1;
+    transform: translateY(0);
   }
 
   pre {
@@ -81,39 +86,60 @@
     from { border-color: transparent; }
     to { border-color: #33ff33; }
   }
-.cmd {
-  display: block;
-  cursor: pointer;
-  color: #33ff33;
-  text-shadow: 0 0 4px #0f0;
-}
 
-.cmd:hover {
-  color: #55ff55;
-  text-shadow: 0 0 6px #0f0;
-}
+  .cmd {
+    display: block;
+    cursor: pointer;
+    color: #33ff33;
+    text-shadow: 0 0 4px #0f0;
+  }
 
-.bbs-output {
-  background-color: #000;
-  border: 2px solid #33ff33;
-  padding: 20px;
-  margin-top: 20px;
-  text-shadow: 0 0 4px #0f0;
-}
+  .cmd:hover {
+    color: #55ff55;
+    text-shadow: 0 0 6px #0f0;
+  }
 
-#bbs-text {
-  white-space: pre-wrap;
-  font-size: 13px;
-  line-height: 1.4;
-}
+  .bbs-output {
+    background-color: #000;
+    border: 2px solid #33ff33;
+    padding: 20px;
+    margin-top: 20px;
+    text-shadow: 0 0 4px #0f0;
+  }
 
+  #bbs-text {
+    white-space: pre-wrap;
+    font-size: 13px;
+    line-height: 1.4;
+  }
 </style>
 </head>
 
 <body class="scanlines crt">
 <div id="container">
 
-<!-- MODEM HANDSHAKE -->
+<!-- BIOS FIRST -->
+<div id="bios" class="block">
+<pre class="typewriter">
+PhoenixBIOS(tm) 1.10 ©1985-1992 Phoenix Technologies Ltd.
+CPU: Intel 8088 @ 4.77MHz
+Memory Test: 640K OK
+Keyboard... Detected
+Video Adapter... MDA
+Fixed Disk... Present
+
+Initializing System...
+Loading Personal History Module...
+Scanning Hardware Timeline...
+Enumerating Machines...
+
+Boot Sequence Complete.
+Launching: RING ZERO – MY COMPUTING JOURNEY
+-----------------------------------------------
+</pre>
+</div>
+
+<!-- MODEM SECOND -->
 <div id="modem" class="block">
 <pre class="typewriter">
 Initializing Modem...
@@ -133,7 +159,7 @@ Welcome to Ring Zero BBS…
 </pre>
 </div>
 
-<!-- BBS LOGIN -->
+<!-- BBS LOGIN THIRD -->
 <div id="login" class="block">
 <pre class="typewriter">
 ───────────────────────────────────────────────────────────────────────────────
@@ -149,70 +175,39 @@ Timeline archive ready for retrieval.
 </pre>
 </div>
 
-<!-- BIOS POST -->
-<div id="bios" class="block">
-<pre class="typewriter">
-PhoenixBIOS(tm) 1.10  ©1985-1992 Phoenix Technologies Ltd.
-CPU: Intel 8088 @ 4.77MHz
-Memory Test: 640K OK
-Keyboard... Detected
-Video Adapter... MDA
-Fixed Disk... Present
-
-Initializing System...
-Loading Personal History Module...
-Scanning Hardware Timeline...
-Enumerating Machines...
-
-Boot Sequence Complete.
-Launching: RING ZERO – MY COMPUTING JOURNEY
------------------------------------------------
-</pre>
-</div>
-
 <!-- ANSI HEADER -->
 <div id="ansi" class="block">
 <pre>
-█▀█ █ █▄░█ █▀▀   ▀█ █▀▀ █▀█ █▀█
-█▀▄ █ █░▀█ █▄█   █▄ ██▄ █▀▄ █▄█
+█▀█ █ █▄░█ █▀▀ ▀█ █▀▀ █▀█ █▀█ █▀▄ █ █░▀█ █▄█ █▄ ██▄ █▀▄ █▄█
+THE MACHINES THAT MADE MY CAREER
 </pre>
 </div>
 
-<!-- MAIN STORY -->
+<!-- STORY -->
 <div id="story" class="block">
-<h1>THE MACHINES THAT MADE MY CAREER</h1>
 <p>
 My entire career — every skill, every system I’ve built, every network I’ve architected — traces back
 to the machines I grew up with. I didn’t learn technology from textbooks. I learned it from hardware
 that crashed, software that misbehaved, and systems that demanded experimentation.
 </p>
-
-<h2>IBM XT (1989)</h2>
-<p>
-The IBM XT was my gateway into computing. A machine that looked more like industrial equipment than
-a personal device, humming quietly as it booted into DOS.
-</p>
-
-<!-- (Your full expanded story continues here unchanged) -->
-
 </div>
 
 <!-- TIMELINE -->
 <div id="timeline" class="block">
 <pre>
-─────────────────────────── R I N G   Z E R O   S Y S T E M   T I M E L I N E ────────────────────────────
+─────────────────────────── R I N G Z E R O S Y S T E M T I M E L I N E ────────────────────────────
 
 1989 ─► IBM XT
-  4 MHz • 1 MB • DOS • Thexder • First machine • Learned boot configs
+4 MHz • 1 MB • DOS • Thexder • First machine • Learned boot configs
 
 1991 ─► IBM PS/1
-  10 MHz • 2 MB • PC DOS • Commander Keen
+10 MHz • 2 MB • PC DOS • Commander Keen
 
 1993 ─► 386 Clone
-  DOOM • IRQ conflicts • Sound Blaster
+DOOM • IRQ conflicts • Sound Blaster
 
 1995 ─► 486SX Clone
-  Win 3.11/95 • Novell IPX/SPX
+Win 3.11/95 • Novell IPX/SPX
 
 1996–98 ─► Cyrix • AMD K2 • Celeron • Pentium II/III
 
@@ -232,9 +227,8 @@ a personal device, humming quietly as it booted into DOS.
 </pre>
 </div>
 
-<!-- BBS MENU -->
+<!-- INTERACTIVE BBS MENU -->
 <div id="menu" class="block">
-<div id="bbs-menu" class="bbs-menu">
 <pre>
 ┌──────────────────────────────────────────────────────────────────────────────┐
 │                         R I N G   Z E R O   B B S                            │
@@ -264,82 +258,58 @@ Click a command from the menu to continue…
 </pre>
 </div>
 
-</div>
+<!-- AUDIO -->
+<audio id="biosBeep">
+  <source src="https://ringze.ro/assets/sfx/bios-beep.mp3" type="audio/mpeg">
+</audio>
+
+<audio id="modemSfx">
+  <source src="https://ringze.ro/assets/sfx/modem-14400.mp3" type="audio/mpeg">
+</audio>
 
 <footer>
-  <span>RETRO COMPUTING LOG · CRT MODE ENABLED · RING ZERO</span>
+RETRO COMPUTING LOG · CRT MODE ENABLED · RING ZERO
 </footer>
 
 </div>
 
 <script>
-// Sequential fade-in animation
-const blocks = ["modem","login","bios","ansi","story","timeline","menu"];
-let delay = 500;
-
-blocks.forEach(id => {
+// Sequential fade-in + sound
+function showSequence(id, delay, sound) {
   setTimeout(() => {
-    document.getElementById(id).style.opacity = 1;
+    const el = document.getElementById(id);
+    el.classList.add("visible");
+    if (sound) {
+      const audio = document.getElementById(sound);
+      audio.volume = 0.4;
+      audio.play().catch(()=>{});
+    }
   }, delay);
-  delay += 1500;
-});
-</script>
+}
 
-  <script>
+// BIOS → MODEM → BBS → ANSI → STORY → TIMELINE → MENU
+showSequence("bios", 500, "biosBeep");
+showSequence("modem", 4500, "modemSfx");
+showSequence("login", 12000, null);
+showSequence("ansi", 15000, null);
+showSequence("story", 17000, null);
+showSequence("timeline", 19000, null);
+showSequence("menu", 21000, null);
+
+// Interactive BBS menu
 const output = document.getElementById("bbs-text");
 
 const responses = {
-  messages: `
-[ MESSAGE BASES ]
-System updates, timeline logs, hardware notes, sysop broadcasts.
-(Feature coming soon in Ring Zero BBS v2.0)
-  `,
-  files: `
-[ FILE AREAS ]
-Download system specs, lab configs, retro docs, and archived machine lists.
-(Feature coming soon)
-  `,
-  ansi: `
-[ ANSI ART GALLERY ]
-Ring Zero logos, BBS art packs, timeline graphics.
-(Feature coming soon)
-  `,
-  chat: `
-[ SYSOP CHAT ]
-Paging sysop...
-No response. Sysop may be in the lab.
-  `,
-  timeline: `
-[ TIMELINE ARCHIVE ]
-XT → PS/1 → clones → Linux → labs → MS‑02
-(Scroll up to view full timeline)
-  `,
-  hardware: `
-[ HARDWARE DATABASE ]
-Search specs for every machine ever connected to Ring Zero Systems.
-(Feature coming soon)
-  `,
-  network: `
-[ NETWORK TOOLS ]
-Ping, traceroute, port scan, BGP route viewer.
-(Feature coming soon)
-  `,
-  lab: `
-[ LAB CONTROL PANEL ]
-Manage virtual nodes, ESXi cluster, containers, MS‑02 workloads.
-(Feature coming soon)
-  `,
-  settings: `
-[ USER SETTINGS ]
-Change password, ANSI preferences, baud rate, terminal type.
-(Feature coming soon)
-  `,
-  logout: `
-[ LOG OFF ]
-Hanging up...
-~~ carrier lost ~~
-Connection terminated.
-  `
+  messages: `[ MESSAGE BASES ]\nSystem updates, timeline logs, hardware notes, sysop broadcasts.`,
+  files: `[ FILE AREAS ]\nDownload system specs, lab configs, retro docs, archived machine lists.`,
+  ansi: `[ ANSI ART GALLERY ]\nRing Zero logos, BBS art packs, timeline graphics.`,
+  chat: `[ SYSOP CHAT ]\nPaging sysop...\nNo response. Sysop may be in the lab.`,
+  timeline: `[ TIMELINE ARCHIVE ]\nXT → PS/1 → clones → Linux → labs → MS‑02.`,
+  hardware: `[ HARDWARE DATABASE ]\nSpecs for every machine connected to Ring Zero Systems.`,
+  network: `[ NETWORK TOOLS ]\nPing, traceroute, port scan, BGP route viewer.`,
+  lab: `[ LAB CONTROL PANEL ]\nManage ESXi nodes, containers, MS‑02 workloads.`,
+  settings: `[ USER SETTINGS ]\nChange password, ANSI preferences, baud rate, terminal type.`,
+  logout: `[ LOG OFF ]\nHanging up...\n~~ carrier lost ~~\nConnection terminated.`
 };
 
 document.querySelectorAll(".cmd").forEach(el => {
