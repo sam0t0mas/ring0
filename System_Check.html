@@ -33,45 +33,56 @@
         <div style="padding-top: 10px;">C:\> RUN DEMO.EXE</div>
     </div>
 
-    <script>
-        const canvas = document.getElementById('canvas');
-        const ctx = canvas.getContext('2d');
-        const overlay = document.getElementById('overlay');
-        let audioCtx, osc;
-
-        function startDemo() {
-            overlay.style.display = 'none';
-            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
-            gain.gain.value = 0.05;
-            osc.start();
-            requestAnimationFrame(render);
-        }
-
-        let t = 0;
-        function render() {
-            t += 0.05;
-            const w = canvas.width = 160;
-            const h = canvas.height = 100;
-            const img = ctx.createImageData(w, h);
-            for (let i = 0; i < img.data.length; i += 4) {
-                const x = (i / 4) % w;
-                const y = Math.floor((i / 4) / w);
-                const val = Math.sin(x / 8 + t) + Math.sin((y + t) / 8) + Math.sin((x + y + t) / 16);
-                img.data[i] = val * 64 + 64;
-                img.data[i+1] = val * 128 + 128;
-                img.data[i+2] = 255;
-                img.data[i+3] = 255;
+     <style>
+        body { margin: 0; overflow: hidden; background: #000; }
+        canvas { display: block; }
+    </style>
+</head>
+<body>
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@latest/build/three.module.js"
             }
-            ctx.putImageData(img, 0, 0);
-            osc.frequency.value = 110 + Math.sin(t) * 40;
-            requestAnimationFrame(render);
+        }
+    </script>
+    <script type="module">
+        import * as THREE from 'three';
+
+        // Scene setup
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+
+        // Geometry: TorusKnot
+        const geometry = new THREE.TorusKnotGeometry(10, 3, 100, 16);
+        const material = new THREE.MeshNormalMaterial({ wireframe: true });
+        const torusKnot = new THREE.Mesh(geometry, material);
+        scene.add(torusKnot);
+
+        camera.position.z = 50;
+
+        // Animation loop
+        function animate() {
+            requestAnimationFrame(animate);
+            torusKnot.rotation.x += 0.01;
+            torusKnot.rotation.y += 0.02;
+            renderer.render(scene, camera);
         }
 
-        overlay.addEventListener('click', startDemo);
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        animate();
     </script>
+</body>
+</html>
+
+
 </body>
 </html>
