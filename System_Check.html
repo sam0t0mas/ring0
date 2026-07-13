@@ -1,78 +1,93 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <style>
-        body, html { margin: 0; padding: 0; background: #000; color: #0f0; font-family: 'Courier New', Courier, monospace; overflow: hidden; }
-        
-        /* CRT Scanline Effect */
-        body::before { content: " "; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06)); background-size: 100% 2px, 3px 100%; pointer-events: none; z-index: 10; }
-
-        #container { position: relative; width: 80vw; height: 80vh; border: 2px solid #0055ff; background: #000080; margin: 5vh auto; padding: 10px; box-shadow: 5px 5px 0px #000; }
-        
-        #marquee { background: #fff; color: #000; padding: 5px; font-weight: bold; overflow: hidden; white-space: nowrap; }
-        #marquee span { display: inline-block; padding-left: 100%; animation: scroll 10s linear infinite; }
-        @keyframes scroll { 0% { transform: translate(0, 0); } 100% { transform: translate(-100%, 0); } }
-
-        #term { height: 70%; display: flex; align-items: center; justify-content: center; position: relative; }
-        canvas { width: 100%; height: 100%; image-rendering: pixelated; }
-
-        #overlay { position: absolute; inset: 0; background: #000; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 5; cursor: pointer; }
+        body { margin: 0; background: #050505; color: #0f0; font-family: 'Courier New', monospace; overflow: hidden; }
+        #crt { position: fixed; inset: 0; background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%); background-size: 100% 4px; pointer-events: none; z-index: 100; }
+        #container { width: 90vw; height: 90vh; border: 2px solid #0055ff; background: #000020; margin: 5vh auto; padding: 20px; overflow-y: auto; }
+        #ascii-display { white-space: pre; font-size: 10px; color: #fff; margin-bottom: 20px; }
+        canvas { width: 100%; height: 150px; image-rendering: pixelated; border: 1px solid #0f0; }
+        .controls { margin-top: 20px; border-top: 1px solid #0f0; padding-top: 10px; }
+        button { background: #000; color: #0f0; border: 1px solid #0f0; padding: 10px; cursor: pointer; }
     </style>
 </head>
 <body>
-
+    <div id="crt"></div>
     <div id="container">
-        <div id="marquee"><span>RINGZE.RO BBS // CALLING ALL NODES // SYSTEM ONLINE</span></div>
-        <div id="term">
-            <div id="overlay">
-                <p>RINGZE.RO BBS v1.0 [1992]</p>
-                <p>PRESS [ENTER] TO CONNECT</p>
-            </div>
-            <canvas id="canvas"></canvas>
+        <h1>RINGZE.RO // BBS v1.0 // MULTI-TRACK ENGINE</h1>
+        <div id="ascii-display">LOAD AN ASCII FILE TO DISPLAY...</div>
+        <canvas id="canvas"></canvas>
+        <div class="controls">
+            <input type="file" id="fileInput" style="display:none">
+            <button onclick="document.getElementById('fileInput').click()">[ LOAD ASCII FILE ]</button>
+            <button id="startBtn">[ START AUDIO ENGINE ]</button>
         </div>
-        <div style="padding-top: 10px;">C:\> RUN DEMO.EXE</div>
     </div>
 
     <script>
         const canvas = document.getElementById('canvas');
         const ctx = canvas.getContext('2d');
-        const overlay = document.getElementById('overlay');
-        let audioCtx, osc;
+        let audioCtx, masterGain;
 
-        function startDemo() {
-            overlay.style.display = 'none';
-            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            osc = audioCtx.createOscillator();
+        // --- File Loader ---
+        document.getElementById('fileInput').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            const reader = new FileReader();
+            reader.onload = (e) => { document.getElementById('ascii-display').textContent = e.target.result; };
+            reader.readAsText(file);
+        });
+
+        // --- Multi-Track Synth ---
+        function playNote(freq, type, duration, startTime, gainVal) {
+            const osc = audioCtx.createOscillator();
             const gain = audioCtx.createGain();
+            osc.type = type;
+            osc.frequency.setValueAtTime(freq, startTime);
+            gain.gain.setValueAtTime(gainVal, startTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, startTime + duration);
             osc.connect(gain);
-            gain.connect(audioCtx.destination);
-            gain.gain.value = 0.05;
-            osc.start();
-            requestAnimationFrame(render);
+            gain.connect(masterGain);
+            osc.start(startTime);
+            osc.stop(startTime + duration);
         }
 
+        function startAudio() {
+            if (audioCtx) return;
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            masterGain = audioCtx.createGain();
+            masterGain.gain.value = 0.2;
+            masterGain.connect(audioCtx.destination);
+            
+            let time = audioCtx.currentTime;
+            const sequence = () => {
+                // Track 1: Bass (Sine)
+                playNote(55, 'sine', 0.5, time, 0.3);
+                // Track 2: Melody (Square)
+                if (Math.random() > 0.5) playNote(220 + (Math.random() * 100), 'square', 0.2, time, 0.1);
+                // Track 3: Percussion (Noise)
+                if (Math.random() > 0.7) playNote(100, 'sawtooth', 0.1, time, 0.05);
+                
+                time += 0.5;
+                setTimeout(sequence, 500);
+            };
+            sequence();
+            render();
+        }
+
+        // --- Graphics ---
         let t = 0;
         function render() {
-            t += 0.05;
-            const w = canvas.width = 160;
-            const h = canvas.height = 100;
-            const img = ctx.createImageData(w, h);
-            for (let i = 0; i < img.data.length; i += 4) {
-                const x = (i / 4) % w;
-                const y = Math.floor((i / 4) / w);
-                const val = Math.sin(x / 8 + t) + Math.sin((y + t) / 8) + Math.sin((x + y + t) / 16);
-                img.data[i] = val * 64 + 64;
-                img.data[i+1] = val * 128 + 128;
-                img.data[i+2] = 255;
-                img.data[i+3] = 255;
+            t += 0.02;
+            ctx.fillStyle = '#000'; ctx.fillRect(0,0, canvas.width, canvas.height);
+            for(let i=0; i<100; i++) {
+                ctx.fillStyle = `hsl(${t*50 + i}, 100%, 50%)`;
+                ctx.fillRect(i*5, Math.sin(t + i*0.1)*50 + 75, 4, 4);
             }
-            ctx.putImageData(img, 0, 0);
-            osc.frequency.value = 110 + Math.sin(t) * 40;
             requestAnimationFrame(render);
         }
 
-        overlay.addEventListener('click', startDemo);
+        document.getElementById('startBtn').addEventListener('click', startAudio);
     </script>
 </body>
 </html>
-
