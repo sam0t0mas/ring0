@@ -1,84 +1,95 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
+    <title>RingZero BBS - Demoscene Demo</title>
     <style>
-        body, html { margin: 0; padding: 0; background: #000; color: #0f0; font-family: 'Courier New', Courier, monospace; overflow: hidden; }
-        
-        /* CRT Scanline Effect */
-        body::before { content: " "; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06)); background-size: 100% 2px, 3px 100%; pointer-events: none; z-index: 10; }
-
-        #container { position: relative; width: 80vw; height: 80vh; border: 2px solid #0055ff; background: #000080; margin: 5vh auto; padding: 10px; box-shadow: 5px 5px 0px #000; }
-        
-        #marquee { background: #fff; color: #000; padding: 5px; font-weight: bold; overflow: hidden; white-space: nowrap; }
-        #marquee span { display: inline-block; padding-left: 100%; animation: scroll 10s linear infinite; }
-        @keyframes scroll { 0% { transform: translate(0, 0); } 100% { transform: translate(-100%, 0); } }
-
-        #term { height: 70%; display: flex; align-items: center; justify-content: center; position: relative; }
-        canvas { width: 100%; height: 100%; image-rendering: pixelated; }
-
-        #overlay { position: absolute; inset: 0; background: #000; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 5; cursor: pointer; }
+        body, html { margin: 0; padding: 0; overflow: hidden; background: #000; height: 100%; width: 100%; color: #0f0; font-family: monospace; }
+        canvas { display: block; width: 100vw; height: 100vh; position: absolute; top: 0; left: 0; }
+        #terminal { position: absolute; z-index: 10; padding: 20px; width: 80%; }
+        #overlay { position: absolute; z-index: 5; top: 0; left: 0; width: 100%; height: 100%; 
+                   display: flex; align-items: center; justify-content: center; cursor: pointer; }
     </style>
 </head>
 <body>
-
-    <div id="container">
-        <div id="marquee"><span>RINGZE.RO BBS // CALLING ALL NODES // SYSTEM ONLINE</span></div>
-        <div id="term">
-            <div id="overlay">
-                <p>RINGZE.RO BBS v1.0 [1992]</p>
-                <p>PRESS [ENTER] TO CONNECT</p>
-            </div>
-            <canvas id="canvas"></canvas>
-        </div>
-        <div style="padding-top: 10px;">C:\> RUN DEMO.EXE</div>
-    </div>
-    
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Standalone Three.js Demo</title>
-    <style>
-        body { margin: 0; overflow: hidden; background: #000; }
-        canvas { display: block; }
-    </style>
-</head>
-<body>
-    <!-- Full Three.js library included inline -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    
+    <div id="terminal"></div>
+    <div id="overlay">CLICK TO DIAL RINGZERO (RINGZE.RO)</div>
+    <canvas id="canvas"></canvas>
     <script>
-        // Scene setup using the global THREE object
-        const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        const renderer = new THREE.WebGLRenderer({ antialias: true });
-        
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        document.body.appendChild(renderer.domElement);
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        const terminal = document.getElementById('terminal');
+        const overlay = document.getElementById('overlay');
+        let width, height, time = 0;
+        let started = false;
 
-        // Geometry: TorusKnot
-        const geometry = new THREE.TorusKnotGeometry(10, 3, 100, 16);
-        const material = new THREE.MeshNormalMaterial({ wireframe: true });
-        const torusKnot = new THREE.Mesh(geometry, material);
-        scene.add(torusKnot);
+        function log(msg) { terminal.innerHTML += msg + "<br>"; }
 
-        camera.position.z = 50;
-
-        // Animation loop
-        function animate() {
-            requestAnimationFrame(animate);
-            torusKnot.rotation.x += 0.01;
-            torusKnot.rotation.y += 0.02;
-            renderer.render(scene, camera);
+        function startDemo() {
+            if (started) return;
+            started = true;
+            overlay.style.display = 'none';
+            
+            // Dial-up sequence
+            let steps = [
+                "ATDT 555-RINGZERO",
+                "CONNECT 14400 / ARQ",
+                "--- RINGZERO BBS (ringze.ro) ---",
+                "WELCOME, USER.",
+                "LOADING DEMO PACK... INIT GRAPHICS...",
+                "SCENE DATA LOADED. STARTING."
+            ];
+            
+            let i = 0;
+            const timer = setInterval(() => {
+                log("> " + steps[i]);
+                i++;
+                if (i >= steps.length) {
+                    clearInterval(timer);
+                    setTimeout(() => terminal.style.display = 'none', 1000);
+                    loop();
+                }
+            }, 800);
         }
 
-        window.addEventListener('resize', () => {
-            camera.aspect = window.innerWidth / window.innerHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight);
-        });
+        overlay.addEventListener('click', startDemo);
+        
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resize);
+        resize();
 
-        animate();
+        function drawPlasma(t) {
+            const imageData = ctx.createImageData(width, height);
+            const data = imageData.data;
+            for (let x = 0; x < width; x+=4) {
+                for (let y = 0; y < height; y+=4) {
+                    const val = Math.sin(x/50 + t) + Math.sin((x+y)/50 + t) + Math.sin(y/50 + t);
+                    const i = (y * width + x) * 4;
+                    data[i] = val * 64 + 64;
+                    data[i+1] = val * 128 + 128;
+                    data[i+2] = 255;
+                    data[i+3] = 255;
+                }
+            }
+            ctx.putImageData(imageData, 0, 0);
+        }
+
+        function drawScroller(t) {
+            ctx.fillStyle = '#fff';
+            ctx.font = '40px monospace';
+            const x = (width - (t * 150 % (width + 800)));
+            ctx.fillText(">>> CONNECTED TO RINGZE.RO // BBS DEMO SCENE // STAY RADICAL!", x, height - 50);
+        }
+
+        function loop() {
+            time += 0.05;
+            ctx.clearRect(0, 0, width, height);
+            drawPlasma(time);
+            drawScroller(time);
+            requestAnimationFrame(loop);
+        }
     </script>
 </body>
 </html>
