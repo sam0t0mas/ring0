@@ -32,27 +32,27 @@
         </div>
         <div style="padding-top: 10px;">C:\> RUN DEMO.EXE</div>
     </div>
-
-     <style>
+    
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Standalone Three.js Demo</title>
+    <style>
         body { margin: 0; overflow: hidden; background: #000; }
         canvas { display: block; }
     </style>
 </head>
 <body>
-    <script type="importmap">
-        {
-            "imports": {
-                "three": "https://unpkg.com/three@latest/build/three.module.js"
-            }
-        }
-    </script>
-    <script type="module">
-        import * as THREE from 'three';
-
-        // Scene setup
+    <!-- Full Three.js library included inline -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    
+    <script>
+        // Scene setup using the global THREE object
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         const renderer = new THREE.WebGLRenderer({ antialias: true });
+        
         renderer.setSize(window.innerWidth, window.innerHeight);
         document.body.appendChild(renderer.domElement);
 
@@ -80,9 +80,5 @@
 
         animate();
     </script>
-</body>
-</html>
-
-
 </body>
 </html>
